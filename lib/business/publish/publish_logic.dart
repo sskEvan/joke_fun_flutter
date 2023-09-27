@@ -23,7 +23,6 @@ class PublishLogic extends ViewStateLogic {
   RxString videoPath = "".obs;
   final FocusNode focusNode = FocusNode();
 
-
   @override
   void onInit() async {
     super.onInit();
@@ -31,10 +30,10 @@ class PublishLogic extends ViewStateLogic {
     if (localJson.isNotEmpty) {
       Map<String, dynamic> localEditInfoMap = jsonDecode(localJson);
       updateInput(localEditInfoMap["input"]);
-      if (localEditInfoMap["selectedAssetIds"] != null) {
-        List<String> selectedAssetIds =
-            localEditInfoMap["selectedAssetIds"].cast<String>();
-        for (var assetId in selectedAssetIds) {
+      if (localEditInfoMap["selectedImageAssetIds"] != null) {
+        List<String> selectedImageAssetIds =
+            localEditInfoMap["selectedImageAssetIds"].cast<String>();
+        for (var assetId in selectedImageAssetIds) {
           AssetEntity? asset = await AssetEntity.fromId(assetId);
           if (asset != null) {
             _selectedImageAssets.add(asset);
@@ -43,6 +42,15 @@ class PublishLogic extends ViewStateLogic {
       }
       if (localEditInfoMap["imagePaths"] != null) {
         imagePaths.value = localEditInfoMap["imagePaths"].cast<String>();
+      }
+      if (localEditInfoMap["selectedVideoAssetId"] != null) {
+        AssetEntity? asset = await AssetEntity.fromId(localEditInfoMap["selectedVideoAssetId"]);
+        if (asset != null) {
+          selectedVideoAsset = asset;
+        }
+      }
+      if (localEditInfoMap["videoPath"] != null) {
+        videoPath.value = localEditInfoMap["videoPath"];
       }
     }
   }
@@ -58,7 +66,6 @@ class PublishLogic extends ViewStateLogic {
 
   void selectPics(BuildContext context) async {
     if (videoPath.value.isNotEmpty) {
-      // videoPlayerLogic.stopPlayer();
       videoPath.value = "";
       selectedVideoAsset = null;
     }
@@ -73,7 +80,7 @@ class PublishLogic extends ViewStateLogic {
       if (list != null) {
         _selectedImageAssets = list;
         imagePaths.clear();
-        for (var asset in _selectedImageAssets!) {
+        for (var asset in _selectedImageAssets) {
           File? imgFile = await asset.file;
           if (imgFile != null) {
             imagePaths.add(imgFile.path);
@@ -127,13 +134,16 @@ class PublishLogic extends ViewStateLogic {
     });
   }
 
-  bool hasEdit() => input.isNotEmpty || imagePaths.isNotEmpty;
+  bool hasEdit() =>
+      input.isNotEmpty || imagePaths.isNotEmpty || videoPath.isNotEmpty;
 
   void saveEditInfo() {
     Map<String, dynamic> editInfoMap = {
       "input": input.value,
       "imagePaths": imagePaths,
-      "selectedAssetIds": _selectedImageAssets.map((e) => e.id).toList()
+      "selectedImageAssetIds": _selectedImageAssets.map((e) => e.id).toList(),
+      "videoPath": videoPath.value,
+      "selectedVideoAssetId": selectedVideoAsset?.id,
     };
     String json = jsonEncode(editInfoMap);
     PreferenceUtils.instance.putString(_editInfoMapKey, json);
@@ -151,9 +161,5 @@ class PublishLogic extends ViewStateLogic {
     Get.back();
   }
 
-  @override
-  void onClose() {
-    // videoPlayerLogic.stopPlayer();
-    super.onClose();
-  }
+
 }
