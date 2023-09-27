@@ -14,7 +14,7 @@ class YellowPalette extends IPalette {
   @override
   Color secondary = const Color(0xFFF8F8AF);
   @override
-  Color background = const Color(0xFFFEFEFE);
+  Color background = const Color(0xFFFAFAFA);
   @override
   Color firstText = const Color(0xFF333333);
   @override
@@ -27,10 +27,6 @@ class YellowPalette extends IPalette {
   Color secondIcon = const Color(0xFF666666);
   @override
   Color thirdIcon = const Color(0xFF999999);
-  @override
-  Color appBarBackground = const Color(0xFFEEEEEE);
-  @override
-  Color appBarContent = const Color(0xFF333333);
   @override
   Color card = const Color(0xFFFFFFFF);
   @override

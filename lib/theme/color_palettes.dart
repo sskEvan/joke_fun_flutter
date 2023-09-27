@@ -24,6 +24,7 @@ class ColorPalettes {
     return _instance!;
   }
 
+  /// App主题色集合
   final Map<PalettesStyle, IPalette> palettes = {
     PalettesStyle.dark: DarkPalette(),
     PalettesStyle.lightDefault: DefaultPalette(),
@@ -34,8 +35,11 @@ class ColorPalettes {
     PalettesStyle.yellow: YellowPalette(),
   };
 
-  late RxObjectMixin<PalettesStyle> palettesStyle;
+  /// 当前主题色类型
+  late Rx<PalettesStyle> palettesStyle;
 
+
+  /// 初始化--使用上一次的主题色
   void init() {
     int curPalettesIndex = PreferenceUtils.instance.getInteger(key, 1);
     PalettesStyle curPalettes = palettes.keys
@@ -44,11 +48,13 @@ class ColorPalettes {
     palettesStyle = curPalettes.obs;
   }
 
+  /// 改变主题色
   void changeTheme(PalettesStyle style) {
     palettesStyle.value = style;
     PreferenceUtils.instance.putInteger(key, style.index);
   }
 
+  /// 是否是暗黑模式
   bool isDark() => palettesStyle.value == PalettesStyle.dark;
 
   Color get statusBar => palettes[palettesStyle.value]!.primary;
@@ -75,10 +81,6 @@ class ColorPalettes {
 
   Color get thirdIcon => palettes[palettesStyle.value]!.thirdIcon;
 
-  Color get appBarBackground => palettes[palettesStyle.value]!.appBarBackground;
-
-  Color get appBarContent => palettes[palettesStyle.value]!.appBarContent;
-
   Color get card => palettes[palettesStyle.value]!.card;
 
   Color get divider => palettes[palettesStyle.value]!.divider;
@@ -88,4 +90,5 @@ class ColorPalettes {
   Color get inputBackground => palettes[palettesStyle.value]!.inputBackground;
 }
 
+/// 主题色类型
 enum PalettesStyle { dark, lightDefault, blue, green, orange, purple, yellow }

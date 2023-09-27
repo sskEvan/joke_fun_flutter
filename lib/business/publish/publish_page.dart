@@ -103,6 +103,7 @@ class PublishPage extends CpnViewState<PublishLogic> {
             width: 580.w,
             height: height,
             child: Material(
+              color: ColorPalettes.instance.background,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [

@@ -28,10 +28,6 @@ class DefaultPalette extends IPalette {
   @override
   Color thirdIcon = const Color(0xFF999999);
   @override
-  Color appBarBackground = const Color(0xFFEEEEEE);
-  @override
-  Color appBarContent = const Color(0xFF333333);
-  @override
   Color card = const Color(0xFFFFFFFF);
   @override
   Color divider = const Color(0xFFEEEEEE);

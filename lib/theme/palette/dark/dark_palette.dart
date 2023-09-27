@@ -28,10 +28,6 @@ class DarkPalette extends IPalette {
   @override
   Color thirdIcon = const Color(0xFF999999);
   @override
-  Color appBarBackground = const Color(0xFF222222);
-  @override
-  Color appBarContent = const Color(0xFFFFFFFF);
-  @override
   Color card = const Color(0xFF000000);
   @override
   Color divider = const Color(0xFF333333);

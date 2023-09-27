@@ -14,7 +14,7 @@ class BluePalette extends IPalette {
   @override
   Color secondary = const Color(0xFF789BF1);
   @override
-  Color background = const Color(0xFFEEEEEE);
+  Color background = const Color(0xFFFAFAFA);
   @override
   Color firstText = const Color(0xFF333333);
   @override
@@ -28,15 +28,11 @@ class BluePalette extends IPalette {
   @override
   Color thirdIcon = const Color(0xFF999999);
   @override
-  Color appBarBackground = const Color(0xFFEEEEEE);
-  @override
-  Color appBarContent = const Color(0xFF333333);
-  @override
   Color card = const Color(0xFFFFFFFF);
   @override
-  Color divider = const Color(0xFFDDDDDD);
+  Color divider = const Color(0xFFEEEEEE);
   @override
-  Color separator = const Color(0xFFEEEEEE);
+  Color separator = const Color(0xFFF9F9F9);
   @override
   Color inputBackground = const Color(0xFFEEEEEE);
 }
