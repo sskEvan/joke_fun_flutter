@@ -8,9 +8,9 @@ class PurplePalette extends IPalette {
   @override
   Color pure = const Color(0xFFFFFFFF);
   @override
-  Color primary = const Color(0xFFEE3DEE);
+  Color primary = const Color(0xFFCB36CB);
   @override
-  Color primaryVariant = const Color(0xFFB917B9);
+  Color primaryVariant = const Color(0xFF9A0E9A);
   @override
   Color secondary = const Color(0xFFEC8FEC);
   @override

@@ -8,9 +8,9 @@ class YellowPalette extends IPalette {
   @override
   Color pure = const Color(0xFFFFFFFF);
   @override
-  Color primary = const Color(0xFFFFF143);
+  Color primary = const Color(0xFFE0D32E);
   @override
-  Color primaryVariant = const Color(0xFFC7B917);
+  Color primaryVariant = const Color(0xFF857B11);
   @override
   Color secondary = const Color(0xFFF8F8AF);
   @override

@@ -8,9 +8,9 @@ class BluePalette extends IPalette {
   @override
   Color pure = const Color(0xFFFFFFFF);
   @override
-  Color primary = const Color(0xFF3050EE);
+  Color primary = const Color(0xFF3F5BE1);
   @override
-  Color primaryVariant = const Color(0xFF102DB9);
+  Color primaryVariant = const Color(0xFF0E1F79);
   @override
   Color secondary = const Color(0xFF789BF1);
   @override

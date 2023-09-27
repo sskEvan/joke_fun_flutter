@@ -8,9 +8,9 @@ class GreenPalette extends IPalette {
   @override
   Color pure = const Color(0xFFFFFFFF);
   @override
-  Color primary = const Color(0xFF3EC73E);
+  Color primary = const Color(0xFF37B037);
   @override
-  Color primaryVariant = const Color(0xFF129912);
+  Color primaryVariant = const Color(0xFF0D7A0D);
   @override
   Color secondary = const Color(0xFF9FE69F);
   @override
