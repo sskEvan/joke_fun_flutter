@@ -4,6 +4,7 @@ import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:get/get_navigation/src/routes/transitions_type.dart';
 import 'package:joke_fun_flutter/business/index/index_binding.dart';
 import 'package:joke_fun_flutter/business/index/index_page.dart';
+import 'package:joke_fun_flutter/router/router_observer.dart';
 import 'package:joke_fun_flutter/router/routers.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
@@ -27,6 +28,7 @@ class MyApp extends StatelessWidget {
               GetMaterialApp(
                 showPerformanceOverlay: false,
                 getPages: AppRoutes.routerPages,
+                navigatorObservers: [AppRouterObserver()],
                 defaultTransition: Transition.rightToLeft,
                 transitionDuration: const Duration(milliseconds: 150),
                 title: "段子乐",
@@ -51,7 +53,4 @@ class MyApp extends StatelessWidget {
         footerTriggerDistance: 140.w,
         child: child);
   }
-
 }
-
-

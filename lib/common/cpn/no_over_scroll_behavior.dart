@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+/// 去除滑动到边界水波纹效果
 class NoOverScrollBehavior extends ScrollBehavior{
 
   @override

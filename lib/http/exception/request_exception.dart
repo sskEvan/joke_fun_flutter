@@ -20,7 +20,7 @@ class RequestException implements Exception {
     return "$code$message";
   }
 
-  factory RequestException.create(Exception error) {
+  factory RequestException.create(dynamic error) {
     if (error is DioException) {
       switch (error.type) {
         case DioExceptionType.cancel:

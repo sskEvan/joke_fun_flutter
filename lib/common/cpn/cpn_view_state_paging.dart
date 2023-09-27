@@ -2,20 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:joke_fun_flutter/common/cpn/no_over_scroll_behavior.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-import '../view_state/view_state_paging_controller.dart';
+import '../view_state/view_state_paging_logic.dart';
 import 'cpn_view_state.dart';
 
-abstract class CpnViewStatePaging<T extends ViewStatePagingController>
+abstract class CpnViewStatePaging<T extends ViewStatePagingLogic>
     extends CpnViewState<T> {
   bool enableRefresh;
   bool enableLoadMore;
 
   CpnViewStatePaging(
-      {Key? key, this.enableRefresh = true, this.enableLoadMore = true})
+      {Key? key, super.tag, this.enableRefresh = true, this.enableLoadMore = true})
       : super(key: key);
 
   final RefreshController _refreshController =
       RefreshController(initialRefresh: false);
+
+  @override
+  void preInit() {
+    super.preInit();
+    logic.refreshController = _refreshController;
+  }
 
   @override
   Widget buildBody(context) {
@@ -29,14 +35,14 @@ abstract class CpnViewStatePaging<T extends ViewStatePagingController>
         child: SmartRefresher(
             controller: _refreshController,
             enablePullDown:
-                controller.viewState.value.isSuccess() && enableRefresh,
+                logic.viewState.value.isSuccess() && enableRefresh,
             enablePullUp:
-                controller.viewState.value.isSuccess() && enableLoadMore,
+                logic.viewState.value.isSuccess() && enableLoadMore,
             onRefresh: () {
-              controller.refreshPaging(_refreshController);
+              logic.refreshPaging();
             },
             onLoading: () {
-              controller.loadMorePaging(_refreshController);
+              logic.loadMorePaging();
             },
             child: buildPagingList()),
       ),

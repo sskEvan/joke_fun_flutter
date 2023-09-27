@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:dio/io.dart';
+import 'package:joke_fun_flutter/http/interceptor/token_expire_interceptor.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
-import 'interceptor/error_interceptor.dart';
 import 'interceptor/params_interceptor.dart';
 
 class DioClient {
@@ -27,15 +27,17 @@ class DioClient {
     );
 
     dio = Dio(options);
-    (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate = (client) {
+    (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
+        (client) {
       client.badCertificateCallback = (cert, host, port) {
-        return true;	// 返回true强制通过
+        return true; // 返回true强制通过
       };
     };
 
     // 添加error拦截器
     // dio.interceptors.add(ErrorInterceptor());
     dio.interceptors.add(ParamsInterceptor());
+    dio.interceptors.add(TokenExpireInterceptor());
     dio.interceptors.add(PrettyDioLogger(
       // 添加日志格式化工具类
       requestHeader: true,

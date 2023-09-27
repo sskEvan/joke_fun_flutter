@@ -10,7 +10,12 @@ class BaseResult<T> {
 
   BaseResult.fromJson(Map<String, dynamic> json) {
     if (json['data'] != null&&json['data']!='null') {
-      data = JsonConvert.fromJsonAsT<T>(json['data']);
+      try {
+        data = JsonConvert.fromJsonAsT<T>(json['data']);
+      }catch (e) {
+        /// fix List<String>
+        data = List<String>.from(json['data']) as T;
+      }
     }
     code = json['code'];
     msg = json['msg'];

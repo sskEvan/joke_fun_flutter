@@ -6,36 +6,30 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:joke_fun_flutter/business/user_center/user_center_logic.dart';
-import 'package:joke_fun_flutter/common/cpn/cpn_sliver_page.dart';
+import 'package:joke_fun_flutter/common/cpn/cpn_image.dart';
+import 'package:joke_fun_flutter/common/cpn/cpn_nested_page.dart';
 import 'package:joke_fun_flutter/common/ext/asset_ext.dart';
-import 'package:joke_fun_flutter/models/user_info_entity.dart';
+import 'package:joke_fun_flutter/common/util/media_util.dart';
 import 'package:joke_fun_flutter/router/routers.dart';
 import 'package:joke_fun_flutter/theme/color_palettes.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
-import '../../common/cpn/cpn_image.dart';
-import '../../common/util/media_util.dart';
-import '../../common/util/user_manager.dart';
-import '../../models/login_entity.dart';
+/// 用户中心页面
+class UserCenterPage extends CpnNestedPage<UserCenterLogic> {
+  UserCenterPage({super.key, super.tag});
 
-class UserCenterPage extends CpnSliverPage {
-  UserCenterPage({Key? key}) : super(key: key);
-
-  final controller = Get.find<UserCenterLogic>();
   final expandedHeight = 660.w;
   double nicknameWidgetBottom = 0.0;
 
   @override
-  Widget buildSliverAppBar(BuildContext context) {
+  Widget buildNestedHeader(BuildContext context) {
     final titleBarBottom = MediaQuery.of(context).padding.top + 88.w;
     scrollController.addListener(() {
       double maxScrollOffset = nicknameWidgetBottom - titleBarBottom;
       double fraction =
           max(0, min(1, scrollController.offset / maxScrollOffset));
-      controller.titleBarAlpha.value = fraction;
-      controller.updateScrollOffset(scrollController.offset);
+      logic.titleBarAlpha.value = fraction;
     });
-    controller.scrollController = scrollController;
     return Obx(() {
       return SliverAppBar(
           toolbarHeight: 88.w,
@@ -48,29 +42,28 @@ class UserCenterPage extends CpnSliverPage {
           titleSpacing: 0,
           systemOverlayStyle: SystemUiOverlayStyle(
             statusBarColor: ColorPalettes.instance.pure
-                .withOpacity(controller.titleBarAlpha.value),
+                .withOpacity(logic.titleBarAlpha.value),
           ),
           flexibleSpace: _flexibleSpace(context),
           bottom: PreferredSize(
-              preferredSize: Size(double.infinity, 100.w), child: _tabBar())
-      );
+              preferredSize: Size(double.infinity, 100.w), child: _tabBar()));
     });
   }
 
   Widget _titleBar() {
-    User? user = UserManager().loginEntity.value?.userInfo;
     return PreferredSize(
         preferredSize: Size(double.infinity, 88.w),
         child: Container(
           width: double.infinity,
           height: 88.w,
           color: ColorPalettes.instance.pure
-              .withOpacity(controller.titleBarAlpha.value),
+              .withOpacity(logic.titleBarAlpha.value),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               SizedBox(width: 32.w),
               GestureDetector(
+                  behavior: HitTestBehavior.opaque,
                   onTap: () {
                     Get.back();
                   },
@@ -79,17 +72,16 @@ class UserCenterPage extends CpnSliverPage {
                       height: 40.w,
                       color: Color.fromARGB(
                           255,
-                          255 - (255 * controller.titleBarAlpha.value).toInt(),
-                          255 - (255 * controller.titleBarAlpha.value).toInt(),
-                          255 -
-                              (255 * controller.titleBarAlpha.value).toInt()))),
+                          255 - (255 * logic.titleBarAlpha.value).toInt(),
+                          255 - (255 * logic.titleBarAlpha.value).toInt(),
+                          255 - (255 * logic.titleBarAlpha.value).toInt()))),
               SizedBox(width: 32.w),
               Opacity(
-                opacity: controller.titleBarAlpha.value,
+                opacity: logic.titleBarAlpha.value,
                 child: Row(
                   children: [
-                    cpnCircleBorderNetworkImage(
-                        url: decodeMediaUrl(user?.avatar),
+                    cpnCircleBorderImage(
+                        url: decodeMediaUrl(logic.avatar()),
                         border: Border.fromBorderSide(BorderSide(
                             color: ColorPalettes.instance.primary, width: 2.w)),
                         size: 60.w,
@@ -99,7 +91,7 @@ class UserCenterPage extends CpnSliverPage {
                       width: 16.w,
                     ),
                     Text(
-                      user?.nickname ?? "",
+                      logic.nickName(),
                       style: TextStyle(
                           fontWeight: FontWeight.w500,
                           fontSize: 32.w,
@@ -127,16 +119,16 @@ class UserCenterPage extends CpnSliverPage {
   }
 
   Widget _blurBackground() {
-    User? user = UserManager().loginEntity.value?.userInfo;
     return SizedBox(
       width: double.infinity,
-      height: 360.w,
+      height: double.infinity,
       child: ImageFiltered(
         imageFilter: ImageFilter.blur(sigmaX: 30.w, sigmaY: 30.w),
-        child: cpnNetworkImage(
-            url: decodeMediaUrl(user?.avatar),
-            width: 360.w,
-            height: 360.w,
+        child: cpnImage(
+            url: decodeMediaUrl(logic.avatar()),
+            width: double.infinity,
+            height: double.infinity,
+            boxFit: BoxFit.fitWidth,
             defaultPlaceHolderAssetName: "ic_default_avatar",
             defaultErrorAssetName: "ic_default_avatar"),
       ),
@@ -145,7 +137,7 @@ class UserCenterPage extends CpnSliverPage {
 
   Widget _cardBackground() {
     return Container(
-        margin: EdgeInsets.only(top: 290.w),
+        margin: EdgeInsets.only(top: 280.w),
         width: double.infinity,
         height: double.infinity,
         decoration: BoxDecoration(
@@ -156,8 +148,6 @@ class UserCenterPage extends CpnSliverPage {
   }
 
   Widget _flexibleContent(BuildContext context) {
-    User? user = UserManager().loginEntity.value?.userInfo;
-    UserInfo? userInfo = Get.arguments;
     return Column(
       children: [
         Container(
@@ -166,48 +156,48 @@ class UserCenterPage extends CpnSliverPage {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               VisibilityDetector(
-                key: const Key("user_Center_page"),
-                onVisibilityChanged: (VisibilityInfo info) {
-                  if (info.visibleBounds.bottom > 0) {
-                    nicknameWidgetBottom = info.visibleBounds.bottom;
-                  }
-                },
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(height: 220.w),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Hero(
-                            tag: "user_avatar",
-                            child: cpnCircleBorderNetworkImage(
-                                url: decodeMediaUrl(user?.avatar),
-                                border: Border.fromBorderSide(BorderSide(
-                                    color: ColorPalettes.instance.primary,
-                                    width: 4.w)),
-                                size: 180.w,
-                                defaultPlaceHolderAssetName: "ic_default_avatar",
-                                defaultErrorAssetName: "ic_default_avatar"),
-                          ),
-                          _editButton()
-                        ],
-                      ),
-                      SizedBox(height: 16.w),
-                      Text(
-                        user?.nickname ?? "",
-                        style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 44.w,
-                            color: ColorPalettes.instance.firstText),
-                      ),
-                    ]),
-              ),
+                  key: const Key("user_center_page"),
+                  onVisibilityChanged: (VisibilityInfo info) {
+                    if (info.visibleBounds.bottom > 0) {
+                      nicknameWidgetBottom = info.visibleBounds.bottom;
+                    }
+                  },
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(height: 220.w),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Hero(
+                              tag: "user_avatar",
+                              child: cpnCircleBorderImage(
+                                  url: decodeMediaUrl(logic.avatar()),
+                                  border: Border.fromBorderSide(BorderSide(
+                                      color: ColorPalettes.instance.primary,
+                                      width: 4.w)),
+                                  size: 180.w,
+                                  defaultPlaceHolderAssetName:
+                                      "ic_default_avatar",
+                                  defaultErrorAssetName: "ic_default_avatar"),
+                            ),
+                            _editButton()
+                          ],
+                        ),
+                        SizedBox(height: 16.w),
+                        Text(
+                          logic.nickName(),
+                          style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 44.w,
+                              color: ColorPalettes.instance.firstText),
+                        ),
+                      ])),
               SizedBox(
                 height: 16.w,
               ),
               Text(
-                user?.signature ?? "期待您的创作～",
+                logic.signature(),
                 style: TextStyle(
                     fontWeight: FontWeight.w400,
                     fontSize: 26.w,
@@ -218,11 +208,25 @@ class UserCenterPage extends CpnSliverPage {
               ),
               Row(
                 children: [
-                  _userAttributesItem("关注", userInfo?.attentionNum),
-                  SizedBox(width: 48.w),
-                  _userAttributesItem("粉丝", userInfo?.fansNum),
-                  SizedBox(width: 48.w),
-                  _userAttributesItem("乐豆", userInfo?.experienceNum),
+                  _userAttributesItem(
+                      "获赞", logic.userCenterEntity.value?.likeNum),
+                  SizedBox(
+                    width: 48.w,
+                  ),
+                  _userAttributesItem(
+                      "关注", logic.userCenterEntity.value?.attentionNum,
+                      onClick: () {
+                    AppRoutes.jumpPage(AppRoutes.fansPage,
+                        arguments: {"isFans": false, "userId": logic.userId});
+                  }),
+                  SizedBox(
+                    width: 48.w,
+                  ),
+                  _userAttributesItem(
+                      "粉丝", logic.userCenterEntity.value?.fansNum, onClick: () {
+                    AppRoutes.jumpPage(AppRoutes.fansPage,
+                        arguments: {"isFans": true, "userId": logic.userId});
+                  }),
                 ],
               ),
               SizedBox(
@@ -239,30 +243,47 @@ class UserCenterPage extends CpnSliverPage {
     );
   }
 
-  Widget _userAttributesItem(String name, int? count) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Text(
-          "${count ?? "--"}",
-          style: TextStyle(
-              fontSize: 32.w, color: ColorPalettes.instance.firstText),
-        ),
-        SizedBox(width: 16.w),
-        Text(
-          name,
-          style: TextStyle(
-              fontSize: 28.w, color: ColorPalettes.instance.secondText),
-        ),
-      ],
+  Widget _userAttributesItem(String name, String? count,
+      {VoidCallback? onClick}) {
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: () {
+        if (onClick != null) {
+          onClick();
+        }
+      },
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Text(
+            count ?? "--",
+            style: TextStyle(
+                fontSize: 32.w, color: ColorPalettes.instance.firstText),
+          ),
+          SizedBox(width: 16.w),
+          Text(
+            name,
+            style: TextStyle(
+                fontSize: 28.w, color: ColorPalettes.instance.secondText),
+          ),
+        ],
+      ),
     );
   }
 
   Widget _editButton() {
+    if (!logic.isSelf() && logic.isAttention.value == null) {
+      return const SizedBox();
+    }
     return GestureDetector(
+      behavior: HitTestBehavior.opaque,
       onTap: () {
-        Get.toNamed(AppRoutes.userEditCenterPage);
+        if (logic.isSelf()) {
+          AppRoutes.jumpPage(AppRoutes.userEditCenterPage);
+        } else {
+          logic.attentionUser();
+        }
       },
       child: Container(
         margin: EdgeInsets.only(top: 80.w),
@@ -270,10 +291,12 @@ class UserCenterPage extends CpnSliverPage {
         height: 56.w,
         alignment: Alignment.center,
         decoration: BoxDecoration(
-            color: ColorPalettes.instance.secondary,
+            color: ColorPalettes.instance.primary,
             borderRadius: BorderRadius.circular(28.w)),
         child: Text(
-          "编辑资料",
+          logic.isSelf()
+              ? "编辑资料"
+              : (logic.isAttention.value == true ? "取消关注" : "+ 关注"),
           style: TextStyle(fontSize: 28.w, color: Colors.white),
         ),
       ),
@@ -282,12 +305,13 @@ class UserCenterPage extends CpnSliverPage {
 
   Widget _tabBar() {
     return TabBar(
-      controller: controller.tabController,
+      controller: logic.tabController,
       indicatorSize: TabBarIndicatorSize.tab,
       isScrollable: false,
       indicator: UnderlineTabIndicator(
           borderRadius: BorderRadius.circular(4.w),
-          insets: EdgeInsets.symmetric(horizontal: 72.w),
+          insets: EdgeInsets.symmetric(
+              horizontal: logic.tabs.length == 4 ? 72.w : 160.w),
           borderSide:
               BorderSide(width: 4.w, color: ColorPalettes.instance.primary)),
       labelPadding: const EdgeInsets.all(0),
@@ -298,9 +322,9 @@ class UserCenterPage extends CpnSliverPage {
           TextStyle(fontSize: 32.w, fontWeight: FontWeight.normal),
       //未选中时标签的颜色
       onTap: (int index) {
-        controller.jumpToPage(index); //点击标签时切换页面
+        logic.jumpToPage(index); //点击标签时切换页面
       },
-      tabs: controller.tabs.map((tab) {
+      tabs: logic.tabs.map((tab) {
         return Container(
           height: 72.w,
           alignment: Alignment.center,
@@ -314,13 +338,13 @@ class UserCenterPage extends CpnSliverPage {
   }
 
   @override
-  Widget buildSliverBody(BuildContext context) {
-    controller.tabController.addListener(() {
-
-    });
+  Widget buildNestedBody(BuildContext context) {
     return TabBarView(
-      controller: controller.tabController,
-      children: controller.navPages,
-    );
+        controller: logic.tabController, children: logic.navPages);
+  }
+
+  @override
+  double pinnedHeaderHeight(BuildContext context) {
+    return MediaQuery.of(context).padding.top + 88.w + 100.w;
   }
 }

@@ -1,31 +1,29 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_instance/src/get_instance.dart';
-import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
+import 'package:get/get.dart';
 import 'package:joke_fun_flutter/common/view_state/view_state.dart';
-import 'package:joke_fun_flutter/common/view_state/view_state_controller.dart';
+import 'package:joke_fun_flutter/common/view_state/view_state_logic.dart';
 
 import '../../theme/color_palettes.dart';
-import 'app_bar.dart';
 import 'cpn_default_view_state.dart';
 
-abstract class CpnViewState<T extends ViewStateController>
-    extends StatelessWidget {
+/// 页面状态自动切换组件（加载中、加载失败、网络错误、空布局、成功页面）
+abstract class CpnViewState<T extends ViewStateLogic> extends StatelessWidget {
   const CpnViewState({Key? key, this.tag, this.bindViewState = true})
       : super(key: key);
 
-  final String? tag;
   final bool bindViewState;
+  final String? tag;
 
-  T get controller => GetInstance().find<T>(tag: tag);
+  T get logic => GetInstance().find<T>(tag: tag);
 
   @override
   Widget build(BuildContext context) {
-    if (!lazyLoadData()) {
-      controller.loadData();
+    preInit();
+    if (!autoLoadData()) {
+      logic.loadData();
     }
     return Obx(() {
-      ViewState viewState = controller.viewState.value;
+      ViewState viewState = logic.viewState.value;
       Widget child;
       if (bindViewState) {
         if (viewState.isSuccess()) {
@@ -33,32 +31,36 @@ abstract class CpnViewState<T extends ViewStateController>
         } else if (viewState.isEmpty()) {
           child = buildCustomEmptyWidget() ??
               defaultEmptyWidget(() {
-                controller.loadData();
+                logic.loadData();
               });
         } else if (viewState.isFail()) {
           child = buildCustomFailWidget() ??
               defaultFailWidget(viewState.errorCode, viewState.errorMessage,
                   () {
-                controller.loadData();
+                logic.loadData();
               });
         } else if (viewState.isError()) {
           child = buildCustomErrorWidget() ??
               defaultErrorWidget(viewState.errorCode, viewState.errorMessage,
                   () {
-                controller.loadData();
+                logic.loadData();
               });
         } else if (viewState.isLoading()) {
           child = buildCustomLoadingWidget() ?? defaultLoadingWidget();
         } else {
-          child = Container();
+          child = buildCustomLoadingWidget() ?? defaultLoadingWidget();
         }
       } else {
         child = buildBody(context);
       }
-      return Scaffold(
-          appBar: buildAppBar(),
-          backgroundColor: ColorPalettes.instance.background,
-          body: child);
+
+      return useScaffold()
+          ? Scaffold(
+              appBar: buildAppBar(),
+              resizeToAvoidBottomInset: resizeToAvoidBottomInset(),
+              backgroundColor: backgroundColor(),
+              body: child)
+          : child;
     });
   }
 
@@ -84,5 +86,13 @@ abstract class CpnViewState<T extends ViewStateController>
 
   Widget buildBody(BuildContext context);
 
-  bool lazyLoadData() => false;
+  bool autoLoadData() => false;
+
+  bool useScaffold() => true;
+
+  bool resizeToAvoidBottomInset() => true;
+
+  void preInit() {}
+
+  Color backgroundColor() => ColorPalettes.instance.background;
 }

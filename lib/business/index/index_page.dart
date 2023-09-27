@@ -8,6 +8,7 @@ import 'package:lottie/lottie.dart';
 
 import 'index_logic.dart';
 
+/// 首页
 class IndexPage extends StatelessWidget {
   IndexPage({Key? key}) : super(key: key);
 
@@ -79,7 +80,7 @@ class IndexPage extends StatelessWidget {
             child: Image.asset("nav_push".png,
                 width: 72.w, height: 72.w, color: Colors.white),
             onPressed: () {
-              Get.toNamed(AppRoutes.pushPage);
+              AppRoutes.jumpPage(AppRoutes.publishPage, needLogin: true);
             },
           ),
         ));

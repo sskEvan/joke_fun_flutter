@@ -1,17 +1,19 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:joke_fun_flutter/business/common/event/login_event.dart';
+import 'package:joke_fun_flutter/common/util/event_bus_manager.dart';
 import 'package:joke_fun_flutter/common/util/user_manager.dart';
-import 'package:joke_fun_flutter/common/view_state/view_state_controller.dart';
+import 'package:joke_fun_flutter/common/view_state/view_state_logic.dart';
 import 'package:joke_fun_flutter/http/retrofit_client.dart';
 import 'package:joke_fun_flutter/models/login_entity.dart';
 
 import '../../../common/util/string_util.dart';
 
-class VerifyCodeLoginLogic extends ViewStateController {
+class VerifyCodeLoginLogic extends ViewStateLogic {
   TextEditingController textEditingController = TextEditingController();
   RxString phone = "".obs;
   RxString verifyCode = "".obs;
-  RxBool isPhoneNumValid = true.obs;
+  RxBool isPhoneNumValid = false.obs;
   RxBool getVerifyCodeSuccess = false.obs;
   RxBool verifyCodeValid = false.obs;
 
@@ -34,18 +36,19 @@ class VerifyCodeLoginLogic extends ViewStateController {
     sendRequest(
         RetrofitClient.instance.apiService.getLoginVerifyCode(phone.value),
         showLoadingDialog: true,
-        judgeEmptyBlock: (value) => false,
-        successBlock: (value) => getVerifyCodeSuccess.value = true);
+        emptyAsSuccess: true,
+        successCallback: (value) => getVerifyCodeSuccess.value = true);
   }
 
-  /// 验证码登陆
+  /// 验证码登录
   void loginByCode() {
     sendRequest(
         RetrofitClient.instance.apiService.loginByCode(verifyCode.value, phone.value),
         showLoadingDialog: true,
-        successBlock: (value) {
+        successCallback: (value) {
           LoginEntity loginEntity = value!;
-          UserManager.instance.saveLoginEntity(loginEntity);
+          UserManager.instance.updateLoginEntity(loginEntity);
+          eventBus.fire(LoginEvent());
           Get.back();
         });
   }

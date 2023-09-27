@@ -1,6 +1,4 @@
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_interface.dart';
-import 'package:get/get_core/src/get_main.dart';
 
 import '../cpn/loading_dialog.dart';
 
@@ -19,6 +17,13 @@ extension GetExt on GetInterface {
   ///隐藏dialog
   hideLoading() {
     if (Get.isDialogOpen != null && Get.isDialogOpen!) {
+      Get.back();
+    }
+  }
+
+  ///隐藏dialog
+  hideBottomSheet() {
+    if (Get.isBottomSheetOpen != null && Get.isBottomSheetOpen!) {
       Get.back();
     }
   }

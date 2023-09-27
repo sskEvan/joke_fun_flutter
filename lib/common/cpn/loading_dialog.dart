@@ -4,6 +4,7 @@ import 'package:joke_fun_flutter/common/ext/asset_ext.dart';
 import 'package:joke_fun_flutter/theme/color_palettes.dart';
 import 'package:lottie/lottie.dart';
 
+/// 通用加载对话框
 class LoadingDialog extends Dialog {
   const LoadingDialog({Key? key}) : super(key: key);
 

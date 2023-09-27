@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:get/get.dart';
+import 'package:joke_fun_flutter/common/util/preference_utils.dart';
 import 'package:joke_fun_flutter/theme/palette/dark/dark_palette.dart';
 import 'package:joke_fun_flutter/theme/palette/ipalette.dart';
 import 'package:joke_fun_flutter/theme/palette/light/blue_palette.dart';
@@ -12,6 +13,8 @@ import 'package:joke_fun_flutter/theme/palette/light/yellow_palette.dart';
 
 class ColorPalettes {
   ColorPalettes._();
+
+  final String key = "keyPalettesIndex";
 
   static ColorPalettes get instance => _getInstance();
   static ColorPalettes? _instance;
@@ -31,51 +34,58 @@ class ColorPalettes {
     PalettesStyle.yellow: YellowPalette(),
   };
 
-  final RxObjectMixin<PalettesStyle> _colorStyle =
-      PalettesStyle.lightDefault.obs;
+  late RxObjectMixin<PalettesStyle> palettesStyle;
 
-  void changeTheme(PalettesStyle style) {
-    _colorStyle.value = style;
+  void init() {
+    int curPalettesIndex = PreferenceUtils.instance.getInteger(key, 1);
+    PalettesStyle curPalettes = palettes.keys
+        .where((element) => element.index == curPalettesIndex)
+        .first;
+    palettesStyle = curPalettes.obs;
   }
 
-   bool isDark() => _colorStyle.value == PalettesStyle.dark;
+  void changeTheme(PalettesStyle style) {
+    palettesStyle.value = style;
+    PreferenceUtils.instance.putInteger(key, style.index);
+  }
 
-  Color get statusBar => palettes[_colorStyle.value]!.primary;
+  bool isDark() => palettesStyle.value == PalettesStyle.dark;
 
-  Color get pure => palettes[_colorStyle.value]!.pure;
+  Color get statusBar => palettes[palettesStyle.value]!.primary;
 
-  Color get primary => palettes[_colorStyle.value]!.primary;
+  Color get pure => palettes[palettesStyle.value]!.pure;
 
-  Color get primaryVariant => palettes[_colorStyle.value]!.primaryVariant;
+  Color get primary => palettes[palettesStyle.value]!.primary;
 
-  Color get secondary => palettes[_colorStyle.value]!.secondary;
+  Color get primaryVariant => palettes[palettesStyle.value]!.primaryVariant;
 
-  Color get background => palettes[_colorStyle.value]!.background;
+  Color get secondary => palettes[palettesStyle.value]!.secondary;
 
-  Color get firstText => palettes[_colorStyle.value]!.firstText;
+  Color get background => palettes[palettesStyle.value]!.background;
 
-  Color get secondText => palettes[_colorStyle.value]!.secondText;
+  Color get firstText => palettes[palettesStyle.value]!.firstText;
 
-  Color get thirdText => palettes[_colorStyle.value]!.thirdText;
+  Color get secondText => palettes[palettesStyle.value]!.secondText;
 
-  Color get firstIcon => palettes[_colorStyle.value]!.firstIcon;
+  Color get thirdText => palettes[palettesStyle.value]!.thirdText;
 
-  Color get secondIcon => palettes[_colorStyle.value]!.secondIcon;
+  Color get firstIcon => palettes[palettesStyle.value]!.firstIcon;
 
-  Color get thirdIcon => palettes[_colorStyle.value]!.thirdIcon;
+  Color get secondIcon => palettes[palettesStyle.value]!.secondIcon;
 
-  Color get appBarBackground => palettes[_colorStyle.value]!.appBarBackground;
+  Color get thirdIcon => palettes[palettesStyle.value]!.thirdIcon;
 
-  Color get appBarContent => palettes[_colorStyle.value]!.appBarContent;
+  Color get appBarBackground => palettes[palettesStyle.value]!.appBarBackground;
 
-  Color get card => palettes[_colorStyle.value]!.card;
+  Color get appBarContent => palettes[palettesStyle.value]!.appBarContent;
 
-  Color get divider => palettes[_colorStyle.value]!.divider;
+  Color get card => palettes[palettesStyle.value]!.card;
 
-  Color get separator => palettes[_colorStyle.value]!.separator;
+  Color get divider => palettes[palettesStyle.value]!.divider;
 
-  Color get inputBackground => palettes[_colorStyle.value]!.inputBackground;
+  Color get separator => palettes[palettesStyle.value]!.separator;
 
+  Color get inputBackground => palettes[palettesStyle.value]!.inputBackground;
 }
 
-enum PalettesStyle { dark, lightDefault, blue, green, orange, purple, yellow}
+enum PalettesStyle { dark, lightDefault, blue, green, orange, purple, yellow }

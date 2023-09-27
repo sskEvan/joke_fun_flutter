@@ -7,6 +7,7 @@ import 'package:joke_fun_flutter/theme/color_palettes.dart';
 import 'package:lottie/lottie.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
+/// 自定义下拉刷新指示器
 class DefaultRefreshHeader extends RefreshIndicator {
   DefaultRefreshHeader({super.key})
       : super(height: 180.w, refreshStyle: RefreshStyle.Follow);
@@ -17,7 +18,8 @@ class DefaultRefreshHeader extends RefreshIndicator {
   }
 }
 
-class _DefaultRefreshHeaderState extends RefreshIndicatorState<DefaultRefreshHeader> {
+class _DefaultRefreshHeaderState
+    extends RefreshIndicatorState<DefaultRefreshHeader> {
   @override
   Widget buildContent(BuildContext context, RefreshStatus refreshStatus) {
     Widget textWidget;
@@ -64,25 +66,26 @@ class _DefaultRefreshHeaderState extends RefreshIndicatorState<DefaultRefreshHea
           child: Lottie.asset("view_loading".lottie,
               width: 120.w, height: 120.w, animate: false));
     }
-    return Obx(() => Container(
-            color: ColorPalettes.instance.background,
-            width: double.infinity,
-            height: 180.w,
-            alignment: Alignment.center,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                imageWidget ?? SizedBox(width: 120.w, height: 120.w),
-                textWidget,
-                SizedBox(width: 120.w, height: 120.w)
-              ],
-            ),
-          ),
+    return Obx(
+      () => Container(
+        color: ColorPalettes.instance.background,
+        width: double.infinity,
+        height: 180.w,
+        alignment: Alignment.center,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            imageWidget ?? SizedBox(width: 120.w, height: 120.w),
+            textWidget,
+            SizedBox(width: 120.w, height: 120.w)
+          ],
+        ),
+      ),
     );
   }
 }
 
-
+/// 自定义上拉加载指示器
 class DefaultRefreshFooter extends LoadIndicator {
   DefaultRefreshFooter({super.key})
       : super(height: 140.w, loadStyle: LoadStyle.ShowAlways);
@@ -93,7 +96,8 @@ class DefaultRefreshFooter extends LoadIndicator {
   }
 }
 
-class _DefaultRefreshFooterState extends LoadIndicatorState<DefaultRefreshFooter> {
+class _DefaultRefreshFooterState
+    extends LoadIndicatorState<DefaultRefreshFooter> {
   @override
   Widget buildContent(BuildContext context, LoadStatus loadStatus) {
     Widget textWidget;
@@ -108,7 +112,7 @@ class _DefaultRefreshFooterState extends LoadIndicatorState<DefaultRefreshFooter
             BlendMode.srcIn,
           ),
           child:
-          Lottie.asset("view_loading".lottie, width: 120.w, height: 120.w));
+              Lottie.asset("view_loading".lottie, width: 120.w, height: 120.w));
     } else if (loadStatus == LoadStatus.noMore) {
       textWidget = Text("-- 暂无更多数据 --",
           style: TextStyle(
@@ -134,19 +138,19 @@ class _DefaultRefreshFooterState extends LoadIndicatorState<DefaultRefreshFooter
               color: ColorPalettes.instance.secondText, fontSize: 28.w));
     }
     return Obx(() => Container(
-      color: ColorPalettes.instance.background,
-      width: double.infinity,
-      height: 140.w,
-      alignment: Alignment.center,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          imageWidget ?? SizedBox(width: 120.w, height: 120.w),
-          textWidget,
-          SizedBox(width: 120.w, height: 120.w)
-        ],
-      ),
-    ));
+          color: ColorPalettes.instance.background,
+          width: double.infinity,
+          height: 140.w,
+          alignment: Alignment.center,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              imageWidget ?? SizedBox(width: 120.w, height: 120.w),
+              textWidget,
+              SizedBox(width: 120.w, height: 120.w)
+            ],
+          ),
+        ));
   }
 
   @override

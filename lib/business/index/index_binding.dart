@@ -1,8 +1,7 @@
 import 'package:get/get.dart';
-import 'package:joke_fun_flutter/business/common/logic/video_player_controller.dart';
 import 'package:joke_fun_flutter/business/discovery/discovery_logic.dart';
+import 'package:joke_fun_flutter/business/home/follow/cpn/attention_list/attention_list_logic.dart';
 import 'package:joke_fun_flutter/business/home/follow/cpn/recommend_user/recommend_user_logic.dart';
-import 'package:joke_fun_flutter/business/home/follow/follow_logic.dart';
 import 'package:joke_fun_flutter/business/home/fresh/fresh_logic.dart';
 import 'package:joke_fun_flutter/business/home/fun_pic/fun_pic_logic.dart';
 import 'package:joke_fun_flutter/business/home/home_logic.dart';
@@ -18,8 +17,8 @@ class IndexBinding extends Bindings {
   void dependencies() {
     Get.lazyPut(() => IndexLogic());
     Get.lazyPut(() => HomeLogic());
-    Get.lazyPut(() => FollowLogic());
     Get.lazyPut(() => RecommendUserLogic());
+    Get.lazyPut(() => AttentionListLogic());
     Get.lazyPut(() => RecommendLogic());
     Get.lazyPut(() => FreshLogic());
     Get.lazyPut(() => PureTextLogic());
@@ -27,6 +26,5 @@ class IndexBinding extends Bindings {
     Get.lazyPut(() => DiscoveryLogic());
     Get.lazyPut(() => MessageLogic());
     Get.lazyPut(() => MyLogic());
-    Get.lazyPut(() => VideoListPlayerController());
   }
 }

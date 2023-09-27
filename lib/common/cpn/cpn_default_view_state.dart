@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
+import 'package:joke_fun_flutter/common/cpn/no_over_scroll_behavior.dart';
 import 'package:joke_fun_flutter/common/ext/asset_ext.dart';
+import 'package:joke_fun_flutter/http/exception/request_exception.dart';
+import 'package:joke_fun_flutter/theme/color_palettes.dart';
 import 'package:lottie/lottie.dart';
 
-import '../../http/exception/request_exception.dart';
-import '../../theme/color_palettes.dart';
 
+/// 默认页面状态视图组件（加载中、加载失败、网络错误、空布局）
 Widget defaultLoadingWidget() {
   return Obx(() {
     return Center(
@@ -127,120 +129,37 @@ Widget defaultErrorWidget(
       ));
 }
 
-// SliverList defaultSliverLoadingWidget() {
-//   return SliverList(
-//     delegate: SliverChildBuilderDelegate(
-//       (context, index) {
-//         return defaultLoadingWidget();
-//         // return Container(width: double.infinity, height: 200.w, color: Colors.blue,);
-//       },
-//       childCount: 1,
-//     ),
-//   );
-// }
-//
-// SliverList defaultSliverEmptyWidget(VoidCallback retryBlock) {
-//   return SliverList(
-//     delegate: SliverChildBuilderDelegate(
-//           (context, index) {
-//         return defaultEmptyWidget(retryBlock);
-//         // return Container(width: double.infinity, height: 200.w, color: Colors.blue,);
-//       },
-//       childCount: 1,
-//     ),
-//   );
-// }
-//
-// SliverList defaultSliverFailWidget(int? errorCode, String? errorMessage, VoidCallback retryBlock) {
-//   return SliverList(
-//     delegate: SliverChildBuilderDelegate(
-//           (context, index) {
-//         return defaultFailWidget(errorCode, errorMessage, retryBlock);
-//         // return Container(width: double.infinity, height: 200.w, color: Colors.blue,);
-//       },
-//       childCount: 1,
-//     ),
-//   );
-// }
-//
-// SliverList defaultSliverErrorWidget(int? errorCode, String? errorMessage, VoidCallback retryBlock) {
-//   return SliverList(
-//     delegate: SliverChildBuilderDelegate(
-//           (context, index) {
-//         return defaultErrorWidget(errorCode, errorMessage, retryBlock);
-//         // return Container(width: double.infinity, height: 200.w, color: Colors.blue,);
-//       },
-//       childCount: 1,
-//     ),
-//   );
-// }
-
 Widget defaultSliverLoadingWidget() {
-  return SliverToBoxAdapter(
-    child: defaultLoadingWidget());
+  return ScrollConfiguration(
+      behavior: NoOverScrollBehavior(),
+      child: CustomScrollView(
+          slivers: [SliverToBoxAdapter(child: defaultLoadingWidget())]));
 }
 
 Widget defaultSliverEmptyWidget(VoidCallback retryBlock) {
-  return SliverToBoxAdapter(child: defaultEmptyWidget(retryBlock));
+  return ScrollConfiguration(
+      behavior: NoOverScrollBehavior(),
+      child: CustomScrollView(slivers: [
+        SliverToBoxAdapter(child: defaultEmptyWidget(retryBlock))
+      ]));
 }
 
 Widget defaultSliverFailWidget(
     int? errorCode, String? errorMessage, VoidCallback retryBlock) {
-  return SliverToBoxAdapter(
-      child: defaultFailWidget(errorCode, errorMessage, retryBlock));
+  return ScrollConfiguration(
+      behavior: NoOverScrollBehavior(),
+      child: CustomScrollView(slivers: [
+        SliverToBoxAdapter(
+            child: defaultFailWidget(errorCode, errorMessage, retryBlock))
+      ]));
 }
 
 Widget defaultSliverErrorWidget(
     int? errorCode, String? errorMessage, VoidCallback retryBlock) {
-  return SliverToBoxAdapter(
-      child: defaultErrorWidget(errorCode, errorMessage, retryBlock));
+  return ScrollConfiguration(
+      behavior: NoOverScrollBehavior(),
+      child: CustomScrollView(slivers: [
+        SliverToBoxAdapter(
+            child: defaultErrorWidget(errorCode, errorMessage, retryBlock))
+      ]));
 }
-
-
-// SliverList defaultSliverLoadingWidget() {
-//   return SliverList(
-//     delegate: SliverChildBuilderDelegate(
-//       (context, index) {
-//         return defaultLoadingWidget();
-//         // return Container(width: double.infinity, height: 200.w, color: Colors.blue,);
-//       },
-//       childCount: 1,
-//     ),
-//   );
-// }
-//
-// SliverList defaultSliverEmptyWidget(VoidCallback retryBlock) {
-//   return SliverList(
-//     delegate: SliverChildBuilderDelegate(
-//           (context, index) {
-//         return defaultEmptyWidget(retryBlock);
-//         // return Container(width: double.infinity, height: 200.w, color: Colors.blue,);
-//       },
-//       childCount: 1,
-//     ),
-//   );
-// }
-//
-// SliverList defaultSliverFailWidget(int? errorCode, String? errorMessage, VoidCallback retryBlock) {
-//   return SliverList(
-//     delegate: SliverChildBuilderDelegate(
-//           (context, index) {
-//         return defaultFailWidget(errorCode, errorMessage, retryBlock);
-//         // return Container(width: double.infinity, height: 200.w, color: Colors.blue,);
-//       },
-//       childCount: 1,
-//     ),
-//   );
-// }
-//
-// SliverList defaultSliverErrorWidget(int? errorCode, String? errorMessage, VoidCallback retryBlock) {
-//   return SliverList(
-//     delegate: SliverChildBuilderDelegate(
-//           (context, index) {
-//         return defaultErrorWidget(errorCode, errorMessage, retryBlock);
-//         // return Container(width: double.infinity, height: 200.w, color: Colors.blue,);
-//       },
-//       childCount: 1,
-//     ),
-//   );
-// }

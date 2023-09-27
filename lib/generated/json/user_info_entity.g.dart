@@ -2,6 +2,7 @@ import 'package:joke_fun_flutter/generated/json/base/json_convert_content.dart';
 import 'package:joke_fun_flutter/models/login_entity.dart';
 import 'package:joke_fun_flutter/models/user_info_entity.dart';
 
+
 UserInfoEntity $UserInfoEntityFromJson(Map<String, dynamic> json) {
 	final UserInfoEntity userInfoEntity = UserInfoEntity();
 	final UserInfo? info = jsonConvert.convert<UserInfo>(json['info']);
@@ -23,24 +24,24 @@ Map<String, dynamic> $UserInfoEntityToJson(UserInfoEntity entity) {
 }
 
 UserInfo $UserInfoFromJson(Map<String, dynamic> json) {
-	final UserInfo userInfoInfo = UserInfo();
+	final UserInfo userInfo = UserInfo();
 	final int? attentionNum = jsonConvert.convert<int>(json['attentionNum']);
 	if (attentionNum != null) {
-		userInfoInfo.attentionNum = attentionNum;
+		userInfo.attentionNum = attentionNum;
 	}
 	final int? experienceNum = jsonConvert.convert<int>(json['experienceNum']);
 	if (experienceNum != null) {
-		userInfoInfo.experienceNum = experienceNum;
+		userInfo.experienceNum = experienceNum;
 	}
 	final int? fansNum = jsonConvert.convert<int>(json['fansNum']);
 	if (fansNum != null) {
-		userInfoInfo.fansNum = fansNum;
+		userInfo.fansNum = fansNum;
 	}
 	final int? likeNum = jsonConvert.convert<int>(json['likeNum']);
 	if (likeNum != null) {
-		userInfoInfo.likeNum = likeNum;
+		userInfo.likeNum = likeNum;
 	}
-	return userInfoInfo;
+	return userInfo;
 }
 
 Map<String, dynamic> $UserInfoToJson(UserInfo entity) {
@@ -51,4 +52,3 @@ Map<String, dynamic> $UserInfoToJson(UserInfo entity) {
 	data['likeNum'] = entity.likeNum;
 	return data;
 }
-

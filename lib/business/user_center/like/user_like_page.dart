@@ -1,41 +1,71 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:joke_fun_flutter/common/cpn/cpn_view_state_sliver_body.dart';
-import 'package:joke_fun_flutter/common/cpn/cpn_view_state_sliver_list.dart';
+import 'package:get/get.dart';
+import 'package:joke_fun_flutter/theme/color_palettes.dart';
 
-import '../../common/cpn_joke_item.dart';
 import 'user_like_logic.dart';
 
-class UserLikePage extends CpnViewStateSliverBody<UserLikeLogic> {
-  UserLikePage({super.key});
+/// 用户中心-喜欢
+class UserLikePage extends StatelessWidget {
+  final String userId;
+  final String? tag;
+
+  const UserLikePage({super.key, this.tag, this.userId = ""});
+
+  
 
   @override
-  SliverList buildSliverList() {
-    var items = controller.dataList;
-    return SliverList(
-      delegate: SliverChildBuilderDelegate(
-        (context, index) {
-          return CpnJokeItem(
-              item: items[index],
-              index: index,
-              parentKey: const ValueKey("UserLikePage"));
+  Widget build(BuildContext context) {
+    final logic = Get.find<UserLikeLogic>(tag: tag);
+    logic.init(userId);
+    return Column(children: [
+      _tabBar(logic),
+      Expanded(
+        child: TabBarView(
+          physics: const NeverScrollableScrollPhysics(),
+          controller: logic.tabController,
+          children: logic.navPages,
+        ),
+      )
+    ]);
+  }
+
+  Widget _tabBar(UserLikeLogic logic) {
+    return Container(
+      height: 100.w,
+      padding: EdgeInsets.only(left: 32.w),
+      alignment: Alignment.centerLeft,
+      child: TabBar(
+        controller: logic.tabController,
+        indicatorSize: TabBarIndicatorSize.label,
+        isScrollable: true,
+        indicator: UnderlineTabIndicator(
+            borderRadius: BorderRadius.circular(12.w),
+            insets: EdgeInsets.symmetric(horizontal: 20.w),
+            borderSide: BorderSide(
+                width: 44.w, color: ColorPalettes.instance.inputBackground)),
+        labelPadding: const EdgeInsets.all(0),
+        labelColor: ColorPalettes.instance.firstText,
+        unselectedLabelColor: ColorPalettes.instance.secondText,
+        labelStyle: TextStyle(fontSize: 26.w, fontWeight: FontWeight.bold),
+        unselectedLabelStyle:
+            TextStyle(fontSize: 26.w, fontWeight: FontWeight.normal),
+        //未选中时标签的颜色
+        onTap: (int index) {
+          logic.jumpToPage(index); //点击标签时切换页面
         },
-        childCount: items.length,
+        tabs: logic.tabs.map((tab) {
+          return Container(
+            height: 40.w,
+            padding: EdgeInsets.symmetric(horizontal: 24.w),
+            alignment: Alignment.center,
+            child: Text(
+              tab,
+              textAlign: TextAlign.center,
+            ),
+          );
+        }).toList(),
       ),
     );
   }
-  // @override
-  // SliverList buildSliverList() {
-  //   return SliverList(
-  //     delegate: SliverChildBuilderDelegate(
-  //       (context, index) {
-  //         return Container(
-  //           height: 50.w,
-  //           child: Text("$index"),
-  //         );
-  //       },
-  //       childCount: 100,
-  //     ),
-  //   );
-  // }
 }

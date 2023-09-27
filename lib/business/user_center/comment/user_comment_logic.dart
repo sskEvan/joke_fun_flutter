@@ -1,14 +1,14 @@
-import 'package:get/get.dart';
-import 'package:joke_fun_flutter/common/view_state/view_state_paging_controller.dart';
-import 'package:pull_to_refresh/src/smart_refresher.dart';
+import 'package:flutter/gestures.dart';
+import 'package:joke_fun_flutter/common/view_state/simple_view_state_paging_logic.dart';
+import 'package:joke_fun_flutter/http/retrofit_client.dart';
+import 'package:joke_fun_flutter/models/base_result.dart';
+import 'package:joke_fun_flutter/models/comment_entity.dart';
 
-class UserCommentLogic extends ViewStatePagingController {
-  @override
-  void loadMorePaging(RefreshController refreshController) {
-  }
+class UserCommentLogic extends SimpleViewStatePagingLogic {
 
   @override
-  void refreshPaging(RefreshController refreshController) {
+  Future<BaseResult<List<CommentEntity>>> requestFuture(String pageNum) {
+    return RetrofitClient.instance.apiService.getCommentList(pageNum);
   }
 
 }

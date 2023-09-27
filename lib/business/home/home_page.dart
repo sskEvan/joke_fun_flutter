@@ -23,9 +23,9 @@ class HomePage extends StatelessWidget {
                 child: _topBar(logic))),
         backgroundColor: ColorPalettes.instance.background,
         body: TabBarView(
-            controller: logic.tabController,
-            children: logic.navPages,
-            )));
+          controller: logic.tabController,
+          children: logic.navPages,
+        )));
   }
 
   Widget _topBar(HomeLogic logic) {
@@ -36,12 +36,15 @@ class HomePage extends StatelessWidget {
         InkWell(
           child: Padding(
               padding: EdgeInsets.symmetric(vertical: 20.w, horizontal: 40.w),
-              child: Image.asset("ic_search".png,
-                  width: 40.w,
-                  height: 40.w,
-                  color: ColorPalettes.instance.firstIcon)),
+              child: Hero(
+                tag: "ic_search",
+                child: Image.asset("ic_search".webp,
+                    width: 40.w,
+                    height: 40.w,
+                    color: ColorPalettes.instance.firstIcon),
+              )),
           onTap: () {
-            Get.toNamed(AppRoutes.searchPage);
+            AppRoutes.jumpPage(AppRoutes.searchPage);
           },
         )
       ],

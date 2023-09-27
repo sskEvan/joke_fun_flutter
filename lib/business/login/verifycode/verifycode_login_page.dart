@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:joke_fun_flutter/business/login/verifycode/verifycode_login_logic.dart';
 import 'package:joke_fun_flutter/common/cpn/app_bar.dart';
+import 'package:joke_fun_flutter/common/cpn/cpn_verify_code_input.dart';
 import 'package:joke_fun_flutter/common/cpn/cpn_view_state.dart';
 import 'package:joke_fun_flutter/common/ext/asset_ext.dart';
 import 'package:joke_fun_flutter/common/util/keyboard_util.dart';
+import 'package:joke_fun_flutter/theme/color_palettes.dart';
 
-import '../../../common/cpn/cpn_verify_code_input.dart';
-import '../../../theme/color_palettes.dart';
-
+/// 验证吗登录页面
 class VerifyCodeLoginPage extends CpnViewState<VerifyCodeLoginLogic> {
   const VerifyCodeLoginPage({Key? key}) : super(key: key, bindViewState: false);
 
@@ -21,7 +21,7 @@ class VerifyCodeLoginPage extends CpnViewState<VerifyCodeLoginLogic> {
       padding: EdgeInsets.symmetric(horizontal: 64.w),
       child: AnimatedSwitcher(
           duration: const Duration(milliseconds: 500),
-          child: !controller.getVerifyCodeSuccess.value
+          child: !logic.getVerifyCodeSuccess.value
               ? _inputPhoneNum()
               : _inputVerifyCode()),
     );
@@ -62,7 +62,7 @@ class VerifyCodeLoginPage extends CpnViewState<VerifyCodeLoginLogic> {
         children: [
           Expanded(
             child: TextField(
-              controller: controller.textEditingController,
+              controller: logic.textEditingController,
               keyboardType: TextInputType.number,
               autofocus: true,
               style: TextStyle(
@@ -78,14 +78,15 @@ class VerifyCodeLoginPage extends CpnViewState<VerifyCodeLoginLogic> {
                     fontSize: 36.w, color: ColorPalettes.instance.secondText),
               ),
               onChanged: (value) {
-                controller.updatePhone(value);
+                logic.updatePhone(value);
               },
             ),
           ),
           GestureDetector(
+            behavior: HitTestBehavior.opaque,
             child: Padding(
               padding: EdgeInsets.all(16.w),
-              child: (controller.phone.value.isNotEmpty)
+              child: (logic.phone.value.isNotEmpty)
                   ? Image.asset(
                       "ic_clear_input".webp,
                       width: 40.w,
@@ -95,7 +96,7 @@ class VerifyCodeLoginPage extends CpnViewState<VerifyCodeLoginLogic> {
                   : SizedBox(width: 40.w),
             ),
             onTap: () {
-              controller.updatePhone("");
+              logic.updatePhone("");
             },
           )
         ],
@@ -110,7 +111,7 @@ class VerifyCodeLoginPage extends CpnViewState<VerifyCodeLoginLogic> {
       alignment: Alignment.center,
       padding: EdgeInsets.only(left: 48.w, right: 24.w),
       decoration: BoxDecoration(
-          color: controller.isPhoneNumValid.value
+          color: logic.isPhoneNumValid.value
               ? ColorPalettes.instance.primary
               : ColorPalettes.instance.secondary,
           borderRadius: BorderRadius.circular(56.w)),
@@ -127,9 +128,9 @@ class VerifyCodeLoginPage extends CpnViewState<VerifyCodeLoginLogic> {
                   fontWeight: FontWeight.w600)),
         ),
         onTap: () {
-          if (controller.isPhoneNumValid.value) {
+          if (logic.isPhoneNumValid.value) {
             hideKeyboard();
-            controller.getVerifyCode();
+            logic.getVerifyCode();
           }
         },
       ),
@@ -155,7 +156,7 @@ class VerifyCodeLoginPage extends CpnViewState<VerifyCodeLoginLogic> {
         CpnVerifyCodeInput(
           height: 88.w,
           onSubmit: (value) {
-            controller.inputVerifyCode(value);
+            logic.inputVerifyCode(value);
           },
         ),
         SizedBox(height: 48.w),
@@ -186,7 +187,7 @@ class VerifyCodeLoginPage extends CpnViewState<VerifyCodeLoginLogic> {
       alignment: Alignment.center,
       padding: EdgeInsets.only(left: 48.w, right: 24.w),
       decoration: BoxDecoration(
-          color: controller.verifyCodeValid.value
+          color: logic.verifyCodeValid.value
               ? ColorPalettes.instance.primary
               : ColorPalettes.instance.secondary,
           borderRadius: BorderRadius.circular(56.w)),
@@ -196,14 +197,14 @@ class VerifyCodeLoginPage extends CpnViewState<VerifyCodeLoginLogic> {
           width: double.infinity,
           height: double.infinity,
           alignment: Alignment.center,
-          child: Text("登陆",
+          child: Text("登录",
               style: TextStyle(
                   color: Colors.white,
                   fontSize: 32.w,
                   fontWeight: FontWeight.w600)),
         ),
         onTap: () {
-          controller.loginByCode();
+          logic.loginByCode();
         },
       ),
     );

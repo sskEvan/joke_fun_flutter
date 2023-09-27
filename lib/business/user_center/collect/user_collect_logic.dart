@@ -1,5 +1,4 @@
-import 'package:get/get.dart';
-import 'package:joke_fun_flutter/business/common/joke_list_logic.dart';
+import 'package:joke_fun_flutter/business/common/logic/joke_list_logic.dart';
 import 'package:joke_fun_flutter/http/retrofit_client.dart';
 import 'package:joke_fun_flutter/models/base_result.dart';
 import 'package:joke_fun_flutter/models/joke_detail_entity.dart';

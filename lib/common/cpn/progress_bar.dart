@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 
+/// 自定义进度条
 class ProgressBar extends StatefulWidget {
   final Function()? onDragStart;
   final Function()? onDragEnd;
   final Function()? onDragUpdate;
   final Function(double value) onChange;
-  Key? key;
+  final Key? key;
   double value;
   double width;
   double height;

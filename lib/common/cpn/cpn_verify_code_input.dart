@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:joke_fun_flutter/theme/color_palettes.dart';
 
-import '../../theme/color_palettes.dart';
 
+/// 验证码输入组件
 class CpnVerifyCodeInput extends StatefulWidget {
   final int codeLength;
   final double width;
   final double height;
-  BoxDecoration? codeBoxDecoration;
-  TextStyle? codeTextStyle;
+  final BoxDecoration? codeBoxDecoration;
+  final TextStyle? codeTextStyle;
   final ValueChanged<String>? onSubmit;
 
-  CpnVerifyCodeInput(
+  const CpnVerifyCodeInput(
       {Key? key,
       this.codeLength = 6,
       this.width = double.infinity,
