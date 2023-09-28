@@ -168,6 +168,12 @@ abstract class ApiService {
   Future<BaseResult<dynamic>> postJoke(
       @Field() String content, @Field() int type);
 
+
+  /// 发现页面的推荐列表数据
+  @POST('/douyin/list')
+  @FormUrlEncoded()
+  Future<BaseResult<List<JokeDetailEntity>>> discoveryList();
+
   /// *****************************当前用户相关*****************************
 
   /// 获取当前用户帖子列表

@@ -684,6 +684,30 @@ class _ApiService implements ApiService {
   }
 
   @override
+  Future<BaseResult<List<JokeDetailEntity>>> discoveryList() async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<BaseResult<List<JokeDetailEntity>>>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+      contentType: 'application/x-www-form-urlencoded',
+    )
+            .compose(
+              _dio.options,
+              '/douyin/list',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = BaseResult<List<JokeDetailEntity>>.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
   Future<BaseResult<List<JokeDetailEntity>>> getCreationJokeList(page) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};

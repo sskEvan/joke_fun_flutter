@@ -37,7 +37,6 @@ class IndexPage extends StatelessWidget {
                 return RepaintBoundary(
                   child: ColorFiltered(
                       colorFilter: ColorFilter.mode(
-                        // Color(0xFFF0484E),
                         ColorPalettes.instance.primary,
                         BlendMode.srcIn,
                       ),
@@ -64,7 +63,9 @@ class IndexPage extends StatelessWidget {
           //要实现中间的按钮凸起效果，这行起作用
           bottomNavigationBar: BottomNavigationBar(
             elevation: 8.0,
-            backgroundColor: ColorPalettes.instance.background,
+            backgroundColor: (logic.index.value != 1)
+                ? ColorPalettes.instance.background
+                : Colors.black,
             type: BottomNavigationBarType.fixed,
             currentIndex: logic.index.value,
             fixedColor: ColorPalettes.instance.primary,

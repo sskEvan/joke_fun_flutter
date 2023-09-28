@@ -6,12 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:joke_fun_flutter/business/common/logic/joke_list_video_play_helper_mixin.dart';
+import 'package:joke_fun_flutter/common/cpn/player/custom_video_player_skin.dart';
+import 'package:joke_fun_flutter/models/joke_detail_entity.dart';
+import 'package:joke_fun_flutter/theme/color_palettes.dart';
 import 'package:video_player/video_player.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
-import '../../../common/cpn/player/custom_video_player_skin.dart';
-import '../../../models/joke_detail_entity.dart';
-import '../../../theme/color_palettes.dart';
 
 /// 段子视频播放器组件
 class CpnJokeVideoPlayer extends StatefulWidget {
@@ -39,7 +39,6 @@ class _CpnJokeVideoPlayerState extends State<CpnJokeVideoPlayer> {
   void initState() {
     super.initState();
     videoPlayHelper = widget.videoPlayHelper;
-    // player = JokeVideoPlayerManager.instance.getPlayer(widget.playerKey);
   }
 
   @override

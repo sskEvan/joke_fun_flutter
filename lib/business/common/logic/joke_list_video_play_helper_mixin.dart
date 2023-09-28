@@ -6,6 +6,8 @@ import 'package:get/get.dart';
 import 'package:joke_fun_flutter/business/common/event/app_lifecycle_state_event.dart';
 import 'package:joke_fun_flutter/business/common/event/home_tab_index_changed_event.dart';
 import 'package:joke_fun_flutter/business/common/event/index_navigation_index_changed_event.dart';
+import 'package:joke_fun_flutter/business/home/home_logic.dart';
+import 'package:joke_fun_flutter/business/index/index_logic.dart';
 import 'package:joke_fun_flutter/common/cpn/player/custom_video_player_skin.dart';
 import 'package:joke_fun_flutter/common/util/event_bus_manager.dart';
 import 'package:joke_fun_flutter/router/routers.dart';
@@ -74,6 +76,8 @@ abstract mixin class JokeListVideoPlayHelperMixin {
       _controlPlayStatus();
     });
 
+    indexPageIndex = Get.find<IndexLogic>().index.value;
+    homePageIndex = Get.find<HomeLogic>().index.value;
     _controlPlayStatus();
   }
 
