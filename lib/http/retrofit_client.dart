@@ -12,5 +12,4 @@ class RetrofitClient {
   }
 
   ApiService apiService = ApiService();
-
 }

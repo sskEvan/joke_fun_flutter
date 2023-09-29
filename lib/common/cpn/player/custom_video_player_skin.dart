@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:chewie/src/center_play_button.dart';
 import 'package:chewie/src/chewie_player.dart';
 import 'package:chewie/src/helpers/utils.dart';
-import 'package:chewie/src/material/widgets/playback_speed_dialog.dart';
 import 'package:chewie/src/notifiers/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -249,28 +248,6 @@ class _CustomVideoPlayerSkinState extends State<CustomVideoPlayerSkin>
     );
   }
 
-  Future<void> _onSpeedButtonTap() async {
-    _hideTimer?.cancel();
-
-    final chosenSpeed = await showModalBottomSheet<double>(
-      context: context,
-      isScrollControlled: true,
-      useRootNavigator: chewieController.useRootNavigator,
-      builder: (context) => PlaybackSpeedDialog(
-        speeds: chewieController.playbackSpeeds,
-        selected: _latestValue.playbackSpeed,
-      ),
-    );
-
-    if (chosenSpeed != null) {
-      controller.setPlaybackSpeed(chosenSpeed);
-    }
-
-    if (_latestValue.isPlaying) {
-      _startHideTimer();
-    }
-  }
-
   Widget _buildPosition(Color? iconColor) {
     final position = _latestValue.position;
     final duration = _latestValue.duration;
@@ -398,7 +375,7 @@ class _CustomVideoPlayerSkinState extends State<CustomVideoPlayerSkin>
         _displayBufferingIndicator = false;
       }
     } else {
-      _displayBufferingIndicator = controller.value.isBuffering;
+      _displayBufferingIndicator = controller.value.isBuffering || controller.value.position.inMilliseconds == 0;
     }
 
     setState(() {

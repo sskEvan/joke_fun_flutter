@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:joke_fun_flutter/common/util/media_util.dart';
 import 'package:joke_fun_flutter/generated/json/base/json_field.dart';
 import 'package:joke_fun_flutter/generated/json/joke_detail_entity.g.dart';
 import 'dart:convert';
@@ -63,7 +64,8 @@ class JokeDetailJoke {
 	int? videoTime;
 	String? videoUrl;
 
-	String? _testVideoURL;
+	/// 大部分videoUrl无法播放，这里使用测试视频
+	Map<String, dynamic>? _testVideoInfo;
 
 	JokeDetailJoke();
 
@@ -76,19 +78,20 @@ class JokeDetailJoke {
 		return jsonEncode(this);
 	}
 
-	/// 大部分videoUrl无法播放，这里使用测试url
 	String getTestVideoUrl() {
-		if(_testVideoURL == null) {
-			List<String> testUrls = [
-				"http://video.chinanews.com/flv/2019/04/23/400/111773_web.mp4",
-				"https://v-cdn.zjol.com.cn/276982.mp4",
-				"https://v-cdn.zjol.com.cn/280443.mp4",
-				"https://v-cdn.zjol.com.cn/276984.mp4",
-				"https://v-cdn.zjol.com.cn/276985.mp4",
-			];
-			_testVideoURL = testUrls[Random().nextInt(testUrls.length)];
-		}
-		return _testVideoURL!;
+		_testVideoInfo ??= getTestVideoInfo();
+		return _testVideoInfo!["videoUrl"]!;
+	}
+
+
+	int getTestVideoWidth() {
+		_testVideoInfo ??= getTestVideoInfo();
+		return _testVideoInfo!["width"]!;
+	}
+
+	int getTestVideoHeight() {
+		_testVideoInfo ??= getTestVideoInfo();
+		return _testVideoInfo!["height"]!;
 	}
 }
 

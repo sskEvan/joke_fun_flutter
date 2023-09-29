@@ -4,6 +4,8 @@ import 'package:chewie/src/center_play_button.dart';
 import 'package:chewie/src/chewie_player.dart';
 import 'package:chewie/src/notifiers/index.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:joke_fun_flutter/theme/color_palettes.dart';
 import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
 
@@ -11,12 +13,10 @@ import 'package:video_player/video_player.dart';
 class DiscoveryVideoPlayerSkin extends StatefulWidget {
   const DiscoveryVideoPlayerSkin({
     this.showPlayButton = true,
-    this.bufferingCallback,
     Key? key,
   }) : super(key: key);
 
   final bool showPlayButton;
-  final ValueChanged<bool>? bufferingCallback;
 
   @override
   State<StatefulWidget> createState() {
@@ -77,6 +77,19 @@ class _DiscoveryVideoPlayerSkinState extends State<DiscoveryVideoPlayerSkin>
           child: Stack(
             children: [
               _buildHitArea(),
+              if (_displayBufferingIndicator)
+                Align(
+                  alignment: Alignment.bottomLeft,
+                  child: SizedBox(
+                    width: double.infinity,
+                    height: 1.w,
+                    child: LinearProgressIndicator(
+                        color: Colors.white,
+                        backgroundColor: Colors.grey,
+                        valueColor: AlwaysStoppedAnimation<Color>(
+                            ColorPalettes.instance.primary)),
+                  ),
+                )
             ],
           ),
         ),
@@ -112,7 +125,9 @@ class _DiscoveryVideoPlayerSkinState extends State<DiscoveryVideoPlayerSkin>
   }
 
   Widget _buildHitArea() {
-    final isFinished = _latestValue == null ? false : _latestValue!.position >= _latestValue!.duration;
+    final isFinished = _latestValue == null
+        ? false
+        : _latestValue!.position >= _latestValue!.duration;
 
     final bool showPlayButton =
         widget.showPlayButton && !_dragging && !notifier.hideStuff;
@@ -175,7 +190,9 @@ class _DiscoveryVideoPlayerSkinState extends State<DiscoveryVideoPlayerSkin>
   }
 
   void _playPause() {
-    final isFinished = _latestValue == null ? false : _latestValue!.position >= _latestValue!.duration;
+    final isFinished = _latestValue == null
+        ? false
+        : _latestValue!.position >= _latestValue!.duration;
 
     setState(() {
       if (controller.value.isPlaying) {
@@ -212,9 +229,9 @@ class _DiscoveryVideoPlayerSkinState extends State<DiscoveryVideoPlayerSkin>
 
   void _bufferingTimerTimeout() {
     _displayBufferingIndicator = true;
-    if (widget.bufferingCallback != null) {
-      widget.bufferingCallback!(_displayBufferingIndicator);
-    }
+    // if (widget.bufferingCallback != null) {
+    //   widget.bufferingCallback!(_displayBufferingIndicator);
+    // }
     if (mounted) {
       setState(() {});
     }
@@ -236,13 +253,10 @@ class _DiscoveryVideoPlayerSkinState extends State<DiscoveryVideoPlayerSkin>
         _displayBufferingIndicator = false;
       }
     } else {
-      _displayBufferingIndicator = controller.value.isBuffering &&
-          controller.value.position.inMilliseconds > 0;
+      _displayBufferingIndicator = controller.value.isBuffering ||
+          controller.value.position.inMilliseconds == 0;
     }
-    if (widget.bufferingCallback != null) {
-      widget.bufferingCallback!(_displayBufferingIndicator);
-    }
-    setState(() {
+     setState(() {
       _latestValue = controller.value;
     });
   }

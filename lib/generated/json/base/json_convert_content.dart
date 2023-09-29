@@ -201,7 +201,6 @@ List<T>? convertListNotNull<T>(dynamic value, {EnumConvertFunction? enumConvert}
 		}
 		if (json is List) {
 			return _getListChildType<M>(json.map((e) => e as Map<String, dynamic>).toList());
-
 		} else {
 			return jsonConvert.convert<M>(json);
 		}

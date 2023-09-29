@@ -8,7 +8,6 @@ import 'package:joke_fun_flutter/business/common/event/home_tab_index_changed_ev
 import 'package:joke_fun_flutter/business/common/event/index_navigation_index_changed_event.dart';
 import 'package:joke_fun_flutter/business/home/home_logic.dart';
 import 'package:joke_fun_flutter/business/index/index_logic.dart';
-import 'package:joke_fun_flutter/common/cpn/player/custom_video_player_skin.dart';
 import 'package:joke_fun_flutter/common/util/event_bus_manager.dart';
 import 'package:joke_fun_flutter/router/routers.dart';
 import 'package:video_player/video_player.dart';
@@ -48,6 +47,7 @@ abstract mixin class JokeListVideoPlayHelperMixin {
 
   /// 标记app是否退到后台
   bool _appResuming = true;
+
 
   late StreamSubscription _indexPageIndexSubscription;
   late StreamSubscription _homePageIndexSubscription;
@@ -142,7 +142,8 @@ abstract mixin class JokeListVideoPlayHelperMixin {
   }
 
   /// 初始化视频播放器，由curPlayIndex驱动，然后进行视频播放
-  void initVideoPlayer(String? videoId, String? videoUrl) {
+  void initVideoPlayer(
+      String? videoId, String? testVideoId, double aspectRatio, Widget skin) {
     if (!_isVideoActive) {
       return;
     }
@@ -156,10 +157,9 @@ abstract mixin class JokeListVideoPlayHelperMixin {
     }
     videoPlayerController?.dispose();
     chewieController?.dispose();
-
     lastPlayVideoId = videoId;
     videoPlayerController =
-        VideoPlayerController.networkUrl(Uri.parse(videoUrl ?? ""));
+        VideoPlayerController.networkUrl(Uri.parse(testVideoId ?? ""));
 
     chewieController = ChewieController(
         videoPlayerController: videoPlayerController!,
@@ -167,8 +167,9 @@ abstract mixin class JokeListVideoPlayHelperMixin {
         autoPlay: true,
         looping: true,
         useRootNavigator: true,
+        aspectRatio: aspectRatio,
         // 自定义播放布局
-        customControls: const CustomVideoPlayerSkin());
+        customControls: skin);
   }
 
   void resetPlayList() {
