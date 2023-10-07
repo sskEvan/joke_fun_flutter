@@ -5,8 +5,8 @@ import 'package:joke_fun_flutter/models/base_result.dart';
 import 'package:joke_fun_flutter/models/joke_detail_entity.dart';
 import 'package:joke_fun_flutter/router/routers.dart';
 
-class AttentionListLogic extends JokeListLogic with JokeListVideoPlayHelperMixin {
-
+class AttentionListLogic extends JokeListLogic
+    with JokeListVideoPlayHelperMixin {
   @override
   void onInit() {
     super.onInit();
@@ -26,9 +26,7 @@ class AttentionListLogic extends JokeListLogic with JokeListVideoPlayHelperMixin
 
   @override
   bool judgeVideoActive() {
-    return (AppRoutes.curPage.value == AppRoutes.indexPage ||
-        (AppRoutes.prePage.value == AppRoutes.indexPage &&
-            AppRoutes.curPage.value == AppRoutes.jokeDetailPage)) &&
+    return AppRoutes.curPage.value == AppRoutes.indexPage &&
         indexPageIndex == 0 &&
         homePageIndex == 0;
   }

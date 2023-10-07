@@ -15,7 +15,6 @@ class DiscoveryLogic extends JokeListLogic with JokeListVideoPlayHelperMixin {
     monitorVideoActive();
   }
 
-
   void fetchMoreDataIfNeeded(int curIndex) {
     if (curIndex == dataList.length - 3) {
       loadMorePaging();

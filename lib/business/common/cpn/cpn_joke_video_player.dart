@@ -92,7 +92,7 @@ class CpnJokeVideoPlayer extends StatelessWidget {
 
   Widget _videoPlayer(double aspectRatio) {
     videoPlayHelper.initVideoPlayer(
-        item.joke?.videoUrl,
+        item.joke?.jokesId,
         item.joke?.getTestVideoUrl(),
         aspectRatio,
         const CustomVideoPlayerSkin());

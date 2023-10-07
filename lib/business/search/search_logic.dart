@@ -37,10 +37,6 @@ class SearchLogic extends GetxController {
       searchMode.value = false;
       searchResultLogic.updateKey(keyword.value);
     }
-
-    // JokeVideoPlayerManager.instance
-    //     .getPlayer(JokeVideoPlayerManager.videoKeySearch)
-    //     .resetPlayList();
   }
 
   @override

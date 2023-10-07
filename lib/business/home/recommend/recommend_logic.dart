@@ -1,6 +1,5 @@
 import 'package:joke_fun_flutter/business/common/logic/joke_list_logic.dart';
 import 'package:joke_fun_flutter/business/common/logic/joke_list_video_play_helper_mixin.dart';
-import 'package:joke_fun_flutter/common/util/log_util.dart';
 import 'package:joke_fun_flutter/http/retrofit_client.dart';
 import 'package:joke_fun_flutter/models/base_result.dart';
 import 'package:joke_fun_flutter/models/joke_detail_entity.dart';
@@ -16,7 +15,6 @@ class RecommendLogic extends JokeListLogic with JokeListVideoPlayHelperMixin {
   @override
   void onReady() {
     super.onReady();
-    LogE("--------------------------------RecommendLogic onReady loadData");
     loadData();
   }
 
@@ -27,9 +25,7 @@ class RecommendLogic extends JokeListLogic with JokeListVideoPlayHelperMixin {
 
   @override
   bool judgeVideoActive() {
-    return (AppRoutes.curPage.value == AppRoutes.indexPage ||
-            (AppRoutes.prePage.value == AppRoutes.indexPage &&
-                AppRoutes.curPage.value == AppRoutes.jokeDetailPage)) &&
+    return AppRoutes.curPage.value == AppRoutes.indexPage &&
         indexPageIndex == 0 &&
         homePageIndex == 1;
   }

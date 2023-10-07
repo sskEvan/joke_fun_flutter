@@ -43,8 +43,6 @@ class SearchResultLogic extends JokeListLogic
 
   @override
   bool judgeVideoActive() {
-    return AppRoutes.curPage.value == AppRoutes.searchPage ||
-        (AppRoutes.prePage.value == AppRoutes.searchPage &&
-            AppRoutes.curPage.value == AppRoutes.jokeDetailPage);
+    return AppRoutes.curPage.value == AppRoutes.searchPage;
   }
 }

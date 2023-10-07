@@ -16,7 +16,6 @@ class FreshLogic extends JokeListLogic with JokeListVideoPlayHelperMixin {
   @override
   void onReady() {
     super.onReady();
-    LogE("--------------------------------FreshLogic onReady loadData");
     loadData();
   }
 
@@ -27,9 +26,7 @@ class FreshLogic extends JokeListLogic with JokeListVideoPlayHelperMixin {
 
   @override
   bool judgeVideoActive() {
-    return (AppRoutes.curPage.value == AppRoutes.indexPage ||
-            (AppRoutes.prePage.value == AppRoutes.indexPage &&
-                AppRoutes.curPage.value == AppRoutes.jokeDetailPage)) &&
+    return AppRoutes.curPage.value == AppRoutes.indexPage &&
         indexPageIndex == 0 &&
         homePageIndex == 2;
   }

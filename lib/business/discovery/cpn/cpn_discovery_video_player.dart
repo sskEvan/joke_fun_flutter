@@ -45,7 +45,7 @@ class CpnDiscoveryVideoPlayer extends StatelessWidget {
 
   Widget _videoPlayer(double aspectRatio) {
     videoPlayHelper.initVideoPlayer(
-        item.joke?.videoUrl, item.joke?.getTestVideoUrl(), aspectRatio,
+        item.joke?.jokesId, item.joke?.getTestVideoUrl(), aspectRatio,
         const DiscoveryVideoPlayerSkin());
     return Align(
       alignment: Alignment.center,

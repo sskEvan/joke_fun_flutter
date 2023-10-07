@@ -9,6 +9,7 @@ import 'package:joke_fun_flutter/business/common/event/index_navigation_index_ch
 import 'package:joke_fun_flutter/business/home/home_logic.dart';
 import 'package:joke_fun_flutter/business/index/index_logic.dart';
 import 'package:joke_fun_flutter/common/util/event_bus_manager.dart';
+import 'package:joke_fun_flutter/models/joke_detail_entity.dart';
 import 'package:joke_fun_flutter/router/routers.dart';
 import 'package:video_player/video_player.dart';
 
@@ -33,9 +34,6 @@ abstract mixin class JokeListVideoPlayHelperMixin {
   ChewieController? chewieController;
   VideoPlayerController? videoPlayerController;
 
-  /// 上一个播放的视频url
-  String? lastPlayVideoId;
-
   /// 当前视频是否处于活跃状态（当前视频所在页面是否正显示在屏幕上）
   bool _isVideoActive = false;
 
@@ -48,12 +46,15 @@ abstract mixin class JokeListVideoPlayHelperMixin {
   /// 标记app是否退到后台
   bool _appResuming = true;
 
+  /// 视频所属段子id(每个段子列表页面独自维护)
+  int? _jokeId;
 
   late StreamSubscription _indexPageIndexSubscription;
   late StreamSubscription _homePageIndexSubscription;
   late StreamSubscription _lifecycleStateSubscription;
 
   void monitorVideoActive() {
+    // this.module = module;
     ever(AppRoutes.curPage, (value) {
       _controlPlayStatus();
     });
@@ -83,6 +84,8 @@ abstract mixin class JokeListVideoPlayHelperMixin {
 
   void disposePlayer() {
     resetPlayList();
+    videoPlayerController?.dispose();
+    chewieController?.dispose();
     _indexPageIndexSubscription.cancel();
     _homePageIndexSubscription.cancel();
     _lifecycleStateSubscription.cancel();
@@ -143,7 +146,7 @@ abstract mixin class JokeListVideoPlayHelperMixin {
 
   /// 初始化视频播放器，由curPlayIndex驱动，然后进行视频播放
   void initVideoPlayer(
-      String? videoId, String? testVideoId, double aspectRatio, Widget skin) {
+      int? jokeId, String? testVideoId, double aspectRatio, Widget skin) {
     if (!_isVideoActive) {
       return;
     }
@@ -151,13 +154,13 @@ abstract mixin class JokeListVideoPlayHelperMixin {
       return;
     }
 
-    /// 相同id的视频，直接复用
-    if (videoId == lastPlayVideoId) {
+    /// 段子id的视频，直接复用
+    if (jokeId == _jokeId) {
       return;
     }
     videoPlayerController?.dispose();
     chewieController?.dispose();
-    lastPlayVideoId = videoId;
+    _jokeId = jokeId;
     videoPlayerController =
         VideoPlayerController.networkUrl(Uri.parse(testVideoId ?? ""));
 
@@ -177,16 +180,22 @@ abstract mixin class JokeListVideoPlayHelperMixin {
       return;
     }
     videoPlayerController?.pause();
-    lastPlayVideoId = "";
+    _jokeId = null;
     _allDisplayVideoIndexes.clear();
     _firstAllDisplayIndex = -1;
     curPlayIndex.value = -1;
-    videoPlayerController?.dispose();
-    chewieController?.dispose();
   }
 
   void _controlPlayStatus() {
-    _isVideoActive = judgeVideoActive() && _appResuming;
+    /// 处理详情页需要和列表页item共享一个播放器
+    bool shareSamePlayerInDetailPage = false;
+    JokeDetailEntity? jokeDetailEntity = Get.arguments?["jokeDetailEntity"];
+    if (jokeDetailEntity != null) {
+      shareSamePlayerInDetailPage = jokeDetailEntity.joke?.jokesId == _jokeId &&
+          AppRoutes.curPage.value == AppRoutes.jokeDetailPage;
+    }
+    _isVideoActive =
+        (judgeVideoActive() || shareSamePlayerInDetailPage) && _appResuming;
     if (_isVideoActive) {
       _startPlayIfNeeded();
     } else {
