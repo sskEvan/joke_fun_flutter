@@ -15,8 +15,8 @@ import '../message/message_page.dart';
 import '../my/my_page.dart';
 
 class IndexLogic extends GetxController with WidgetsBindingObserver {
-  RxInt index = 3.obs;
-  PageController pageController = PageController(initialPage: 3);
+  RxInt index = 0.obs;
+  PageController pageController = PageController(initialPage: 0);
 
   final List<Widget> navPages = [
     const KeepAliveWrapper(child: HomePage()),
