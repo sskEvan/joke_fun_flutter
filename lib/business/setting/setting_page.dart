@@ -173,6 +173,7 @@ class SettingPage extends StatelessWidget {
             width: 580.w,
             height: 500.w,
             child: Material(
+              color: ColorPalettes.instance.background,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [

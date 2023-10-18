@@ -93,10 +93,6 @@ abstract class JokeListLogic extends ViewStatePagingLogic {
   }
 
   void attentionUser(int? userId, bool noAttention) {
-    if(!UserManager.instance.isLogin()) {
-      Get.toNamed(AppRoutes.verifyCodeLoginPage);
-      return;
-    }
     sendRequest(
         RetrofitClient.instance.apiService
             .attentionUser(noAttention ? "1" : "0", "${userId ?? ""}"),
@@ -110,10 +106,6 @@ abstract class JokeListLogic extends ViewStatePagingLogic {
   }
 
   void likeJokeAction(int? jokesId, bool? isLike) {
-    if(!UserManager.instance.isLogin()) {
-      Get.toNamed(AppRoutes.verifyCodeLoginPage);
-      return;
-    }
     sendRequest(
         RetrofitClient.instance.apiService
             .likeJoke("${jokesId ?? ""}", "${isLike ?? false}"),
@@ -127,10 +119,6 @@ abstract class JokeListLogic extends ViewStatePagingLogic {
   }
 
   void unlikeJokeAction(int? jokesId, bool? isUnLike) {
-    if(!UserManager.instance.isLogin()) {
-      Get.toNamed(AppRoutes.verifyCodeLoginPage);
-      return;
-    }
     sendRequest(
         RetrofitClient.instance.apiService
             .unlikeJoke("${jokesId ?? ""}", "${isUnLike ?? false}"),

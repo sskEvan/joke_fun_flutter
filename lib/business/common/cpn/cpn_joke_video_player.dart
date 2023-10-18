@@ -17,12 +17,14 @@ class CpnJokeVideoPlayer extends StatelessWidget {
   final int index;
   final bool isInnerList;
   final JokeListVideoPlayHelperMixin videoPlayHelper;
+  final bool multiplex;
 
   const CpnJokeVideoPlayer({
     required this.item,
     required this.index,
     required this.isInnerList,
     required this.videoPlayHelper,
+    this.multiplex = true,
     Key? key,
   }) : super(key: key);
 
@@ -48,7 +50,7 @@ class CpnJokeVideoPlayer extends StatelessWidget {
 
   Widget _video() {
     var key = "video_$index";
-    bool autoPlay = videoPlayHelper.curPlayIndex.value == index || !isInnerList;
+    bool autoPlay = videoPlayHelper.needAutoPlay(index) || !isInnerList;
     var aspectRatio = (item.joke?.getTestVideoWidth() ?? 1) *
         1.0 /
         (item.joke?.getTestVideoHeight() ?? 1);
@@ -75,12 +77,17 @@ class CpnJokeVideoPlayer extends StatelessWidget {
                     ? _videoPlayer(aspectRatio)
                     : const SizedBox.shrink(),
                 (!autoPlay)
-                    ? const Align(
-                        alignment: Alignment.center,
-                        child: AnimatedPlayPause(
-                          color: Colors.white,
-                          size: 32,
-                          playing: false,
+                    ? GestureDetector(
+                        onTap: () {
+                          videoPlayHelper.manualPlay(item.joke?.jokesId, index);
+                        },
+                        child: const Align(
+                          alignment: Alignment.center,
+                          child: AnimatedPlayPause(
+                            color: Colors.white,
+                            size: 32,
+                            playing: false,
+                          ),
                         ),
                       )
                     : const SizedBox.shrink()
@@ -95,7 +102,9 @@ class CpnJokeVideoPlayer extends StatelessWidget {
         item.joke?.jokesId,
         item.joke?.getTestVideoUrl(),
         aspectRatio,
-        const CustomVideoPlayerSkin());
+        multiplex,
+        const CustomVideoPlayerSkin(),
+    );
     return Align(
       alignment: Alignment.center,
       child: Chewie(
@@ -104,4 +113,3 @@ class CpnJokeVideoPlayer extends StatelessWidget {
     );
   }
 }
-

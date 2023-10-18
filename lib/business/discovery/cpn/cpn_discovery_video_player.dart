@@ -11,11 +11,13 @@ class CpnDiscoveryVideoPlayer extends StatelessWidget {
   final JokeDetailEntity item;
   final int index;
   final JokeListVideoPlayHelperMixin videoPlayHelper;
+  final bool multiplex;
 
   const CpnDiscoveryVideoPlayer({
     required this.item,
     required this.index,
     required this.videoPlayHelper,
+    this.multiplex = true,
     Key? key,
   }) : super(key: key);
 
@@ -27,7 +29,7 @@ class CpnDiscoveryVideoPlayer extends StatelessWidget {
         (item.joke?.getTestVideoHeight() ?? 1);
 
     return Obx(() {
-      bool autoPlay = videoPlayHelper.curPlayIndex.value == index;
+      bool autoPlay = videoPlayHelper.needAutoPlay(index);
       return VisibilityDetector(
         key: Key(key),
         onVisibilityChanged: (VisibilityInfo info) {
@@ -45,7 +47,10 @@ class CpnDiscoveryVideoPlayer extends StatelessWidget {
 
   Widget _videoPlayer(double aspectRatio) {
     videoPlayHelper.initVideoPlayer(
-        item.joke?.jokesId, item.joke?.getTestVideoUrl(), aspectRatio,
+        item.joke?.jokesId,
+        item.joke?.getTestVideoUrl(),
+        aspectRatio,
+        multiplex,
         const DiscoveryVideoPlayerSkin());
     return Align(
       alignment: Alignment.center,
@@ -55,4 +60,3 @@ class CpnDiscoveryVideoPlayer extends StatelessWidget {
     );
   }
 }
-

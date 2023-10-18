@@ -15,11 +15,22 @@ import 'package:video_player/video_player.dart';
 
 /// 段子列表视频播放控制辅助类
 abstract mixin class JokeListVideoPlayHelperMixin {
+
+  /// 视频播放控制器
+  ChewieController? chewieController;
+  VideoPlayerController? videoPlayerController;
+
+  /// IndexPage的页面index
+  int indexPageIndex = 0;
+
+  /// HomePage的页面index
+  int homePageIndex = 1;
+
   /// 当前视频列表所有已经完全显示的视频item的index集合
   final List<int> _allDisplayVideoIndexes = [];
 
   /// 当前播放的视频在列表中的索引，由curPlayIndex来驱动视频播放
-  RxInt curPlayIndex = (-1).obs;
+  final RxInt _curPlayIndex = (-1).obs;
 
   /// 当前视频列表第一个完全显示的视频item的index
   int _firstAllDisplayIndex = -1;
@@ -30,18 +41,8 @@ abstract mixin class JokeListVideoPlayHelperMixin {
   /// 当前列表是否在滑动中，滑动介绍后将延迟100ms后播放以一个完全显示的视频item
   bool _isScrolling = false;
 
-  /// 视频播放控制器
-  ChewieController? chewieController;
-  VideoPlayerController? videoPlayerController;
-
   /// 当前视频是否处于活跃状态（当前视频所在页面是否正显示在屏幕上）
   bool _isVideoActive = false;
-
-  /// IndexPage的页面index
-  int indexPageIndex = 0;
-
-  /// HomePage的页面index
-  int homePageIndex = 1;
 
   /// 标记app是否退到后台
   bool _appResuming = true;
@@ -54,7 +55,6 @@ abstract mixin class JokeListVideoPlayHelperMixin {
   late StreamSubscription _lifecycleStateSubscription;
 
   void monitorVideoActive() {
-    // this.module = module;
     ever(AppRoutes.curPage, (value) {
       _controlPlayStatus();
     });
@@ -133,20 +133,20 @@ abstract mixin class JokeListVideoPlayHelperMixin {
     if (chewieController?.isFullScreen == true) {
       return;
     }
-    if (curPlayIndex.value != _firstAllDisplayIndex &&
+    if (_curPlayIndex.value != _firstAllDisplayIndex &&
         _firstAllDisplayIndex != -1) {
       if (_delayTimer != null && _delayTimer!.isActive) {
         _delayTimer!.cancel();
       }
       _delayTimer = Timer(const Duration(milliseconds: 100), () {
-        curPlayIndex.value = _firstAllDisplayIndex;
+        _curPlayIndex.value = _firstAllDisplayIndex;
       });
     }
   }
 
   /// 初始化视频播放器，由curPlayIndex驱动，然后进行视频播放
   void initVideoPlayer(
-      int? jokeId, String? testVideoId, double aspectRatio, Widget skin) {
+      int? jokeId, String? testVideoId, double aspectRatio, bool multiplex, Widget skin) {
     if (!_isVideoActive) {
       return;
     }
@@ -155,7 +155,7 @@ abstract mixin class JokeListVideoPlayHelperMixin {
     }
 
     /// 段子id的视频，直接复用
-    if (jokeId == _jokeId) {
+    if (jokeId == _jokeId && multiplex) {
       return;
     }
     videoPlayerController?.dispose();
@@ -175,6 +175,15 @@ abstract mixin class JokeListVideoPlayHelperMixin {
         customControls: skin);
   }
 
+  /// 手动播放视频，例如在屏幕上同事出现多个完全显示的视频item，最前面的视频item正在播放中，用户点击了后面的视频item播放按钮或者跳到其详情页
+  void manualPlay(int? jokeId, int index) {
+      _jokeId = jokeId;
+      _curPlayIndex.value = index;
+  }
+
+  /// 根据列表索引，判断某个item视频是否需要自动播放
+  bool needAutoPlay(int index) => _curPlayIndex.value == index;
+
   void resetPlayList() {
     if (!_isVideoActive) {
       return;
@@ -183,16 +192,18 @@ abstract mixin class JokeListVideoPlayHelperMixin {
     _jokeId = null;
     _allDisplayVideoIndexes.clear();
     _firstAllDisplayIndex = -1;
-    curPlayIndex.value = -1;
+    _curPlayIndex.value = -1;
   }
 
   void _controlPlayStatus() {
     /// 处理详情页需要和列表页item共享一个播放器
     bool shareSamePlayerInDetailPage = false;
-    JokeDetailEntity? jokeDetailEntity = Get.arguments?["jokeDetailEntity"];
-    if (jokeDetailEntity != null) {
-      shareSamePlayerInDetailPage = jokeDetailEntity.joke?.jokesId == _jokeId &&
-          AppRoutes.curPage.value == AppRoutes.jokeDetailPage;
+    if(AppRoutes.curPage.value == AppRoutes.jokeDetailPage) {
+      JokeDetailEntity? jokeDetailEntity = Get.arguments?["jokeDetailEntity"];
+      if (jokeDetailEntity != null) {
+        shareSamePlayerInDetailPage = jokeDetailEntity.joke?.jokesId == _jokeId &&
+            AppRoutes.curPage.value == AppRoutes.jokeDetailPage;
+      }
     }
     _isVideoActive =
         (judgeVideoActive() || shareSamePlayerInDetailPage) && _appResuming;

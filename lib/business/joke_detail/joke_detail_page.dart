@@ -11,7 +11,6 @@ import 'package:joke_fun_flutter/common/cpn/cpn_nested_page.dart';
 import 'package:joke_fun_flutter/models/joke_detail_entity.dart';
 import 'package:joke_fun_flutter/theme/color_palettes.dart';
 
-
 /// 段子详情页
 class JokeDetailPage extends CpnNestedPage<JokeDetailLogic> {
   JokeDetailPage({Key? key, super.tag}) : super(key: key);
@@ -47,6 +46,7 @@ class JokeDetailPage extends CpnNestedPage<JokeDetailLogic> {
 
   Widget _flexibleSpace(BuildContext context) {
     JokeDetailEntity item = logic.jokeDetailEntity.value;
+
     return FlexibleSpaceBar(
         collapseMode: CollapseMode.pin,
         background: Column(
@@ -69,6 +69,7 @@ class JokeDetailPage extends CpnNestedPage<JokeDetailLogic> {
                       bool noAttention = item.info?.isAttention != true;
                       logic.attentionUser(item.user?.userId, noAttention);
                     },
+                    multiplexVideoPlayer: Get.arguments?["multiplexVideoPlayer"] ?? true,
                     videoPlayHelper: logic.videoPlayHelper,
                     commentCallback: () {
                       showSendCommentSheet(

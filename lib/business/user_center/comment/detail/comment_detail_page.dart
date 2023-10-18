@@ -27,6 +27,9 @@ class CommentDetailPage extends CpnViewState<CommentDetailLogic> {
               children: [
                 CpnJoke(
                   item: logic.jokeDetailEntity.value!,
+                  multiplexVideoPlayer: false,
+                  videoPlayHelper: logic,
+                  index: 0,
                 ),
                 CpnUserCommentItem(commentEntity: logic.commentEntity)
               ],
@@ -38,6 +41,7 @@ class CommentDetailPage extends CpnViewState<CommentDetailLogic> {
           onTap: () {
             Map<String, dynamic> arguments = {
               "jokeDetailEntity": logic.jokeDetailEntity.value,
+              "videoPlayHelper": logic,
               "index": 0
             };
             AppRoutes.jumpPage(AppRoutes.jokeDetailPage, arguments: arguments);

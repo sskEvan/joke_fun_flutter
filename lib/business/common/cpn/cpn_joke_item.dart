@@ -72,6 +72,7 @@ class CpnJoke extends StatelessWidget {
   final VoidCallback? commentCallback;
   final bool isInnerList;
   final JokeListVideoPlayHelperMixin? videoPlayHelper;
+  final bool multiplexVideoPlayer;
 
   const CpnJoke({
     required this.item,
@@ -83,6 +84,7 @@ class CpnJoke extends StatelessWidget {
     this.unlikeCallback,
     this.commentCallback,
     this.isInnerList = false,
+    this.multiplexVideoPlayer = true,
     this.videoPlayHelper,
   }) : super(key: key);
 
@@ -95,6 +97,12 @@ class CpnJoke extends StatelessWidget {
               "index": index,
               "videoPlayHelper": videoPlayHelper,
             };
+            if (isInnerList &&
+                (item.joke?.type ?? 0) >= 3 &&
+                !(videoPlayHelper?.needAutoPlay(index) ?? false)) {
+              videoPlayHelper?.manualPlay(item.joke?.jokesId, index);
+              arguments["multiplexVideoPlayer"] = false;
+            }
             AppRoutes.jumpPage(AppRoutes.jokeDetailPage, arguments: arguments);
           },
           child: Column(
@@ -219,6 +227,7 @@ class CpnJoke extends StatelessWidget {
           item: item,
           index: index,
           isInnerList: isInnerList,
+          multiplex: multiplexVideoPlayer,
           videoPlayHelper: videoPlayHelper!);
     }
   }

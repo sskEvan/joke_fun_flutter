@@ -164,7 +164,7 @@ class AppRoutes {
       } else if (page == commentDetailPage) {
         return Get.to(CommentDetailPage(tag: tag),
             binding: CommentDetailBinding(tag: tag),
-            routeName: jokeDetailPage,
+            routeName: commentDetailPage,
             preventDuplicates: false,
             arguments: arguments);
       } else {
