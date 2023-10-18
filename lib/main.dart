@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
                 navigatorObservers: [AppRouterObserver()],
                 defaultTransition: Transition.rightToLeft,
                 transitionDuration: const Duration(milliseconds: 150),
-                title: "段子乐",
+                title: "JokeFun",
                 home: IndexPage(),
                 initialBinding: IndexBinding(),
                 locale: const Locale('zh'),
