@@ -18,7 +18,7 @@ class CpnVideoPlay extends StatefulWidget {
       {Key? key,
       required this.path,
       this.isNetwork = true,
-      this.autoPlay = false,
+      this.autoPlay = true,
       this.looping = false,
       this.width,
       this.height})
@@ -53,7 +53,6 @@ class _CpnVideoPlayState extends State<CpnVideoPlay>  with WidgetsBindingObserve
           final videoWidth = _videoPlayerController.value.size.width;
           final videoHeight = _videoPlayerController.value.size.height;
           var aspectRatio = videoWidth / videoHeight;
-          // _chewieController.dispose();
 
           _chewieController = ChewieController(
               videoPlayerController: _videoPlayerController,

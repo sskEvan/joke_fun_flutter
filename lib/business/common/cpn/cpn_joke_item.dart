@@ -312,8 +312,8 @@ class CpnJoke extends StatelessWidget {
         picBody = _picItem(
             url: item.joke?.imageUrl ?? "",
             radius: 16.w,
-            width: double.infinity,
-            height: double.infinity);
+            width: 686.w,
+            height: 400.w);
       }
     }
     return Padding(
