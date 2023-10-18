@@ -9,43 +9,35 @@
 * 段子发布
 * 发现（仿抖音划一划功能）
 * 搜索
+* 评论（支持楼中楼）
 * 登陆
-* 个人详情、资料编辑、乐豆
-* 关注、评论（支持楼中楼）
+* 个人详情
+* 资料编辑
+* 乐豆
+* 关注
 * 主题色切换
 * ...
 
 当然，有些功能也没有实现的很完善，例如编辑头像、发布段子包含视频或者图片，并不会真正上传到云，但是整个交互流程都已串通；
-视频播放由于大部分链接无法播放，所以自己mock了一些在线视频链接用于测试。
+视频播放由于大部分视频链接无法播放，所以自己mock了一些在线视频链接用于测试。
 
 ### 运行效果图
-![img](https://github.com/sskEvan/joke_fun_flutter/blob/master/screenshot/gif-2.gif)
-![img](https://github.com/sskEvan/joke_fun_flutter/blob/master/screenshot/gif-1.gif)
-![img](https://github.com/sskEvan/joke_fun_flutter/blob/master/screenshot/登陆-1.webp)
-![img](https://github.com/sskEvan/joke_fun_flutter/blob/master/screenshot/登陆-2.webp)
-![img](https://github.com/sskEvan/joke_fun_flutter/blob/master/screenshot/首页-1.webp)
-![img](https://github.com/sskEvan/joke_fun_flutter/blob/master/screenshot/首页-2.webp)
-![img](https://github.com/sskEvan/joke_fun_flutter/blob/master/screenshot/首页-3.webp)
-![img](https://github.com/sskEvan/joke_fun_flutter/blob/master/screenshot/搜索-1.webp)
-![img](https://github.com/sskEvan/joke_fun_flutter/blob/master/screenshot/搜索-2.webp)
-![img](https://github.com/sskEvan/joke_fun_flutter/blob/master/screenshot/帖子详情-1.webp)
-![img](https://github.com/sskEvan/joke_fun_flutter/blob/master/screenshot/帖子详情-2.webp)
-![img](https://github.com/sskEvan/joke_fun_flutter/blob/master/screenshot/图片查看.webp)
-![img](https://github.com/sskEvan/joke_fun_flutter/blob/master/screenshot/发表评论.webp)
-![img](https://github.com/sskEvan/joke_fun_flutter/blob/master/screenshot/发布.webp)
-![img](https://github.com/sskEvan/joke_fun_flutter/blob/master/screenshot/发现.webp)
-![img](https://github.com/sskEvan/joke_fun_flutter/blob/master/screenshot/个人资料.webp)
-![img](https://github.com/sskEvan/joke_fun_flutter/blob/master/screenshot/关注.webp)
-![img](https://github.com/sskEvan/joke_fun_flutter/blob/master/screenshot/乐豆.webp)
-![img](https://github.com/sskEvan/joke_fun_flutter/blob/master/screenshot/上传头像.webp)
-![img](https://github.com/sskEvan/joke_fun_flutter/blob/master/screenshot/我的.webp)
-![img](https://github.com/sskEvan/joke_fun_flutter/blob/master/screenshot/我的-评论.webp)
-![img](https://github.com/sskEvan/joke_fun_flutter/blob/master/screenshot/我的-喜欢.webp)
-![img](https://github.com/sskEvan/joke_fun_flutter/blob/master/screenshot/主题切换.webp)
-![img](https://github.com/sskEvan/joke_fun_flutter/blob/master/screenshot/深夜模式.webp)
+<img src="https://github.com/sskEvan/joke_fun_flutter/blob/master/screenshot/gif-2.gif" width="320px"><img src="https://github.com/sskEvan/joke_fun_flutter/blob/master/screenshot/gif-1.gif" width="320px">
+
+<img src="https://github.com/sskEvan/joke_fun_flutter/blob/master/screenshot/登陆-1.webp" width="320px"><img src="https://github.com/sskEvan/joke_fun_flutter/blob/master/screenshot/登陆-2.webp" width="320px">
+<img src="https://github.com/sskEvan/joke_fun_flutter/blob/master/screenshot/首页-1.webp" width="320px"><img src="https://github.com/sskEvan/joke_fun_flutter/blob/master/screenshot/首页-2.webp" width="320px">
+<img src="https://github.com/sskEvan/joke_fun_flutter/blob/master/screenshot/首页-3.webp" width="320px"><img src="https://github.com/sskEvan/joke_fun_flutter/blob/master/screenshot/搜索-1.webp" width="320px">
+<img src="https://github.com/sskEvan/joke_fun_flutter/blob/master/screenshot/搜索-2.webp" width="320px"><img src="https://github.com/sskEvan/joke_fun_flutter/blob/master/screenshot/帖子详情-1.webp" width="320px">
+<img src="https://github.com/sskEvan/joke_fun_flutter/blob/master/screenshot/帖子详情-2.webp" width="320px"><img src="https://github.com/sskEvan/joke_fun_flutter/blob/master/screenshot/图片查看.webp" width="320px">
+<img src="https://github.com/sskEvan/joke_fun_flutter/blob/master/screenshot/发表评论.webp" width="320px"><img src="https://github.com/sskEvan/joke_fun_flutter/blob/master/screenshot/发布.webp" width="320px">
+<img src="https://github.com/sskEvan/joke_fun_flutter/blob/master/screenshot/发现.webp" width="320px"><img src="https://github.com/sskEvan/joke_fun_flutter/blob/master/screenshot/个人资料.webp" width="320px">
+<img src="https://github.com/sskEvan/joke_fun_flutter/blob/master/screenshot/关注.webp" width="320px"><img src="https://github.com/sskEvan/joke_fun_flutter/blob/master/screenshot/乐豆.webp" width="320px">
+<img src="https://github.com/sskEvan/joke_fun_flutter/blob/master/screenshot/上传头像.webp" width="320px"><img src="https://github.com/sskEvan/joke_fun_flutter/blob/master/screenshot/我的.webp" width="320px">
+<img src="https://github.com/sskEvan/joke_fun_flutter/blob/master/screenshot/我的-评论.webp" width="320px"><img src="https://github.com/sskEvan/joke_fun_flutter/blob/master/screenshot/我的-喜欢.webp" width="320px">
+<img src="https://github.com/sskEvan/joke_fun_flutter/blob/master/screenshot/主题切换.webp" width="320px"><img src="https://github.com/sskEvan/joke_fun_flutter/blob/master/screenshot/深夜模式.webp" width="320px">
 
 ### 下载地址
-![img](https://github.com/sskEvan/joke_fun_flutter/blob/master/screenshot/JokeFunQrcode.png)
+<img src="https://github.com/sskEvan/joke_fun_flutter/blob/master/screenshot/JokeFunQrcode.png" width="160px">
 
 
 
