@@ -3,7 +3,9 @@ import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:joke_fun_flutter/common/util/preference_utils.dart';
 
+import '../../business/common/event/login_event.dart';
 import '../../models/login_entity.dart';
+import 'event_bus_manager.dart';
 
 class UserManager {
   final String keyLoginEntity = "loginEntity";
@@ -43,14 +45,14 @@ class UserManager {
     return _instance!;
   }
 
-  void updateLoginEntity(LoginEntity loginEntity) {
+  void updateLoginEntity(LoginEntity? loginEntity) {
     _loginEntity.value = loginEntity;
-    nickname.value = loginEntity.userInfo?.nickname ?? "";
-    signature.value = loginEntity.userInfo?.signature ?? "期待您的创作～";
-    sex.value = loginEntity.userInfo?.sex ?? "";
-    birthday.value = loginEntity.userInfo?.birthday ?? "";
-    avatar.value = loginEntity.userInfo?.avatar ?? "";
-    String json = loginEntity.toString();
+    nickname.value = loginEntity?.userInfo?.nickname ?? "";
+    signature.value = loginEntity?.userInfo?.signature ?? "期待您的创作～";
+    sex.value = loginEntity?.userInfo?.sex ?? "";
+    birthday.value = loginEntity?.userInfo?.birthday ?? "";
+    avatar.value = loginEntity?.userInfo?.avatar ?? "";
+    String json = loginEntity?.toString() ?? "";
     PreferenceUtils.instance.putString(keyLoginEntity, json);
   }
 
@@ -97,6 +99,11 @@ class UserManager {
   }
 
   bool isSelf(int? userId) => _loginEntity.value?.userInfo?.userId == userId;
+
+  void logout() {
+    updateLoginEntity(null);
+    eventBus.fire(LoginEvent());
+  }
 
   // void updateUser(User? user) {
   //   if(user != null && _loginEntity.value != null) {

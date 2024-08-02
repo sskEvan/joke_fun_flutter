@@ -237,10 +237,93 @@ class SettingPage extends StatelessWidget {
                         fontWeight: FontWeight.w600)),
               ),
               onTap: () {
-                showToast("todo...");
+                _showLogoutDialog();
               },
             ),
           )
         : const SizedBox.shrink();
+  }
+
+  void _showLogoutDialog() {
+    Get.dialog(Center(
+      child: Center(
+        child: Container(
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+                color: ColorPalettes.instance.background,
+                borderRadius: BorderRadius.all(Radius.circular(32.w))),
+            padding: EdgeInsets.symmetric(vertical: 48.w, horizontal: 32.w),
+            width: 580.w,
+            height: 360.w,
+            child: Material(
+              color: ColorPalettes.instance.background,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text("温馨提示",
+                      style: TextStyle(
+                          fontSize: 36.w,
+                          color: ColorPalettes.instance.firstText,
+                          fontWeight: FontWeight.bold)),
+                  Padding(
+                      padding: EdgeInsets.symmetric(vertical: 32.w),
+                      child: Center(
+                        child: Text("是否确定退出登当前登录?",
+                            style: TextStyle(
+                                fontSize: 32.w,
+                                color: ColorPalettes.instance.secondText)),
+                      )),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          Get.back();
+                        },
+                        child: Container(
+                          alignment: Alignment.center,
+                          height: 72.w,
+                          width: 192.w,
+                          decoration: BoxDecoration(
+                              border: Border.fromBorderSide(BorderSide(
+                                  color: ColorPalettes.instance.thirdText,
+                                  width: 2.w)),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(36.w))),
+                          child: Text(
+                            "取消",
+                            style: TextStyle(
+                                color: ColorPalettes.instance.secondText,
+                                fontSize: 30.w),
+                          ),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Get.back();
+                          UserManager.instance.logout();
+                        },
+                        child: Container(
+                          alignment: Alignment.center,
+                          height: 72.w,
+                          width: 192.w,
+                          decoration: BoxDecoration(
+                              color: ColorPalettes.instance.primary,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(36.w))),
+                          child: Text(
+                            "确定",
+                            style:
+                                TextStyle(color: Colors.white, fontSize: 30.w),
+                          ),
+                        ),
+                      )
+                    ],
+                  )
+                ],
+              ),
+            )),
+      ),
+    ));
   }
 }

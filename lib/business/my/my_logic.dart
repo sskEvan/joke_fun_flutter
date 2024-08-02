@@ -37,6 +37,8 @@ class MyLogic extends ViewStateLogic {
           successCallback: (value) {
         userInfoEntity.value = value;
       });
+    } else {
+      userInfoEntity.value = null;
     }
   }
 
