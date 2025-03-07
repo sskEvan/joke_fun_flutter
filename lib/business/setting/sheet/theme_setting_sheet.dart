@@ -12,13 +12,21 @@ import 'package:joke_fun_flutter/theme/color_palettes.dart';
 void showThemeSettingBottomSheet() {
   final logic = Get.find<SettingLogic>();
   List<Widget> children = [];
-  children.add(_themeSettingTitle());
   children.addAll(logic.palettesStyles
       .map((element) => _themeSettingItem(element))
       .toList());
   Get.bottomSheet(
       Column(
-        children: children,
+        children: [
+          _themeSettingTitle(),
+          Expanded(
+            child: SingleChildScrollView(
+              child: Column(
+                children: children,
+              ),
+            ),
+          )
+        ],
       ),
       backgroundColor: ColorPalettes.instance.background,
       shape: RoundedRectangleBorder(

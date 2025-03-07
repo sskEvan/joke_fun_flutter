@@ -60,7 +60,7 @@ dependencies:
   # image_gallery_saver https://pub-web.flutter-io.cn/packages/image_gallery_saver/install
   image_gallery_saver: ^2.0.3
   # 微信图片选择器 https://pub-web.flutter-io.cn/packages/wechat_assets_picker/install
-  wechat_assets_picker: ^8.6.3
+  wechat_assets_picker: ^9.5.0
   # image_picker https://pub-web.flutter-io.cn/packages/image_picker/install
   image_picker: ^1.0.2
   # 视频播放器 https://pub-web.flutter-io.cn/packages/chewie/install
